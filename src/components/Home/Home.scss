@@ -13,7 +13,6 @@
   }
 
   section {
-
     padding: 0 1rem;
     text-align: center;
   }
@@ -127,14 +126,16 @@
           strong {
             color: #5c5c5c;
             font-weight: bold;
+            font-size: 1.05rem;
+            margin-top: 30px;
 
           }
-
+         
           li {
             position: relative;
             padding-left: 1.8rem;
-            margin: 0.8rem 0 0;
-            font-size: 1.05rem;
+            margin: 0.8rem 0 1rem;
+            font-size: 1rem;
             color: #444;
             line-height: 1.5;
 

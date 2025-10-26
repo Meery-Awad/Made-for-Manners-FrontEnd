@@ -264,7 +264,7 @@ export const joinCallHandler = async (course, userDetails, admin, setJoined, set
   try {
     setLoading(true)
 
-    const res = await axios.get("https://the-manor-of-manners-backend-7pw8.onrender.com/api/agora/agora-token", { params: { courseId: course._id, uid: userId } });
+    const res = await axios.get("https://madeformanners-backend.onrender.com/api/agora/agora-token", { params: { courseId: course._id, uid: userId } });
     const { token, appID, channelName } = res.data;
 
     client.removeAllListeners();
@@ -293,7 +293,7 @@ export const joinCallHandler = async (course, userDetails, admin, setJoined, set
     }
     setUsersMap(prev => ({ ...prev, [userId]: { name, email } }));
 
-    const { data: joinedUsers } = await axios.get(`https://the-manor-of-manners-backend-7pw8.onrender.com/api/courses/${course._id}/joinedUsers`);
+    const { data: joinedUsers } = await axios.get(`https://madeformanners-backend.onrender.com/api/courses/${course._id}/joinedUsers`);
 
     joinedUsers.forEach(u => {
       if (u.userId !== userId && u._id != userId && !document.getElementById(`card-${u._id}`) && !document.getElementById(`card-${u.userId}`)) {
@@ -333,7 +333,7 @@ export const joinCallHandler = async (course, userDetails, admin, setJoined, set
     client.on("user-published", async (remoteUser, mediaType) => {
       await client.subscribe(remoteUser, mediaType);
 
-      const { data: joinedUsers } = await axios.get(`https://the-manor-of-manners-backend-7pw8.onrender.com/api/courses/${course._id}/joinedUsers`);
+      const { data: joinedUsers } = await axios.get(`https://madeformanners-backend.onrender.com/api/courses/${course._id}/joinedUsers`);
       const u = joinedUsers.find(x => x.userId === remoteUser.uid || x._id === remoteUser.uid);
       const userName = u?.name || `User ${remoteUser.uid}`;
       const userEmail = u?.email || "";
@@ -416,7 +416,7 @@ export const leaveCallHandler = async (localTracksRef, course, userDetails, setU
     try { const toUnpublish = tracks.filter(t => t?.enabled); if (toUnpublish.length) await client.unpublish(toUnpublish); } catch { }
     localTracksRef.current = [];
     await client.leave();
-    await axios.post(`https://the-manor-of-manners-backend-7pw8.onrender.com/api/courses/${course._id}/leave`, { userId: userDetails.id || userDetails._id });
+    await axios.post(`https://madeformanners-backend.onrender.com/api/courses/${course._id}/leave`, { userId: userDetails.id || userDetails._id });
     setJoined(false);
     const container = document.getElementById("video-container");
     if (container) container.innerHTML = "";
@@ -427,7 +427,7 @@ export const leaveCallHandler = async (localTracksRef, course, userDetails, setU
     if (hamburger) hamburger.remove();
     if (menu) menu.remove();
 
-    const response = await axios.get(`https://the-manor-of-manners-backend-7pw8.onrender.com/api/courses/${course._id}/joinedUsers`);
+    const response = await axios.get(`https://madeformanners-backend.onrender.com/api/courses/${course._id}/joinedUsers`);
     const joinedUsers = response.data;
 
     const usersObject = {};

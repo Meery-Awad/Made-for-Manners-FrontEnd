@@ -45,12 +45,14 @@ const SortAndFilter = () => {
 
     const handleFilter = () => {
         let filtered = [...originalCoursesRef.current];
-
+     
         if (selectedLevels.length > 0) {
             filtered = filtered.filter(course =>
                 Array.isArray(course.categories) &&
                 selectedLevels.every(level => course.categories.includes(level))
+            
             );
+           
         }
 
         if (startDate) {

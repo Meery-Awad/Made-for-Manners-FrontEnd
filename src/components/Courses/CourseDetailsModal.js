@@ -12,9 +12,9 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
             const matchedCourse = userDetails.courses.find((c) => c._id === course._id);
 
             if (matchedCourse) {
-                
+
                 setBooked(matchedCourse.status || "booked");
-               
+
             }
         }
     }, [course, userDetails]);
@@ -51,18 +51,19 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
                     <p className="mt-3"><strong>Course Date:</strong> {course.date} / {`(${course.time}) - (${course.endtime})`}</p>
                     {/* <p><strong>Registered Users:</strong> {course.bookedUsers.length}</p> */}
                     <p><strong>Course Description:</strong> {course.description}</p>
+                    <p><strong>Course Categories:</strong> {course.categories.join(', ')}</p>
                 </div>
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={onClose}>
                     Close
                 </Button>
-
                 {booked === '' &&
                     <Button variant="primary" onClick={() => onBook(course.name, course.price, course._id)}>
                         Book
                     </Button>
                 }
+    
             </Modal.Footer>
         </Modal>
     );

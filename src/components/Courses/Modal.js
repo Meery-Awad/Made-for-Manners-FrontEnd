@@ -8,6 +8,7 @@ import axios from "axios";
 import noPhoto from '../../images/noImg.jpg'
 
 const CourseModal = () => {
+ 
   const state = useSelector((state) => state.data);
   const {
     userDetails,
@@ -20,23 +21,15 @@ const CourseModal = () => {
     setReload,
     setEditOrAdd,
     serverUrl,
+    categories
   } = useBetween(state.useShareState);
   
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [error, setError] = useState(false);
   const [timeError, setTimeError] = useState(false);
   const errorRef = useRef(null);
 
   const { name, description, date, time, endtime, img, price, recommended, categories: selectedCategories = [] } = courseDetails;
-
-  const categories = [
-    { id: 0, level: 'Youth', icon: '', color: 'blue' },
-    { id: 1, level: 'Student', icon: '', color: 'green' },
-    { id: 2, level: 'Professional & Executive', icon: '', color: 'pink' },
-    { id: 3, level: 'International Etiquette', icon: '', color: 'gold' },
-    { id: 4, level: 'Private Coaching', icon: '', color: 'gold' }
-  ];
 
   const initCourseModal = () => {
     setCourseDetails({
@@ -177,6 +170,7 @@ const CourseModal = () => {
         <Modal.Body ref={errorRef}>
           <form className="Form" onSubmit={handleSubmit}>
             {error && <p className="error">Please fill out all required fields (*)</p>}
+          
 
             <div>
               <label className="lable">Course Name <span className="required">*</span></label>

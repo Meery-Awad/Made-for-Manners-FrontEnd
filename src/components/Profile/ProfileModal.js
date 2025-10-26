@@ -18,9 +18,9 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [error,setError]=useState('')
+  const [error, setError] = useState('')
   const state = useSelector((state) => state.data);
-  const {serverUrl } = useBetween(state.useShareState);
+  const { serverUrl, setLoading } = useBetween(state.useShareState);
 
   useEffect(() => {
     if (userDetails) {
@@ -53,6 +53,7 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     try {
       const res = await axios.put(
         `${serverUrl}/api/users/${formData.id}`,
@@ -60,10 +61,11 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
       );
       setUserDetails(res.data.user);
       handleClose();
+      setLoading(false);
     } catch (err) {
-      alert(
-        " Server error during profile update, please try again",  
-      );
+
+      setError(err.response?.data?.message)
+      setLoading(false);
     }
 
   };
@@ -73,9 +75,9 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
       <Modal.Header closeButton>
         <Modal.Title>Edit Profile</Modal.Title>
       </Modal.Header>
-      
+
       <Modal.Body>
-        {error!='' && <p className="noti">{error}</p>}
+        {error != '' && <p className="noti">{error}</p>}
         <div className="form-group mb-2">
           <label>Name</label>
           <input
@@ -108,9 +110,8 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
             className="form-control"
           />
           <i
-            className={`fas ${
-              showPassword ? "fa-eye-slash" : "fa-eye"
-            } eye-icon`}
+            className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"
+              } eye-icon`}
             onClick={() => setShowPassword(!showPassword)}
           ></i>
         </div>
@@ -126,9 +127,8 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
             className="form-control"
           />
           <i
-            className={`fas ${
-              showConfirmPassword ? "fa-eye-slash" : "fa-eye"
-            } eye-icon`}
+            className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+              } eye-icon`}
             onClick={() =>
               setShowConfirmPassword(!showConfirmPassword)
             }

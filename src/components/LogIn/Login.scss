@@ -1,21 +1,19 @@
 @import '../../App.scss';
 
 .login-page {
+    margin-top: $top - 1rem;
     display: flex;
     justify-content: center;
-    align-items: center;
     height: 100vh;
     width: 100vw;
-    background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.1)),
+    background: linear-gradient(rgba(139, 139, 139, 0.7), rgba(110, 110, 110, 0.7)),
         url('../../images/img.jpg') no-repeat center center;
-
-    background-size: 100vw 100vh;
-    
+    background-size: contain;
 
     .error {
-        color:rgb(206, 39, 39);
+        color: rgb(206, 39, 39);
     }
-    
+
     .img {
         width: 100px;
         height: 5%;
@@ -27,13 +25,15 @@
     }
 
     .login-card {
-        background: rgba(white, 0.9);
+        background: rgba(white, 0.7);
         padding: 1.5rem 3rem;
         border-radius: 12px;
         box-shadow: 0 8px 20px $First-Color;
         width: 350px;
+        height: fit-content;
         text-align: center;
-        margin-top: $top;
+        margin-top: 5%;
+
 
 
         h2 {
@@ -119,12 +119,4 @@
 
 }
 
-@media (max-width: 768px) {
-
-    .login-page {
-        .login-card {
-            margin-top: 0;
-        }
-    }
-
-}
+@media (max-width: 768px) {}

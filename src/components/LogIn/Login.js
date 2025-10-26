@@ -9,15 +9,14 @@ import { Helmet } from 'react-helmet';
 
 const LoginPage = () => {
   const state = useSelector((state) => state.data);
-  const { websiteTitle,userDetails, setUserDetails, setLoading, setUpdatedData, serverUrl, loginKeyWords, registerKeyWords , pageKeywords} =
+  const { websiteTitle, userDetails, setUserDetails, setLoading, setUpdatedData, serverUrl, loginKeyWords, registerKeyWords, pageKeywords } =
     useBetween(state.useShareState);
   const { email, password } = userDetails;
   const [erorr, setErorr] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const fileInputRef = useRef(null); // ref للتحكم بالـ input
-
+  const fileInputRef = useRef(null); 
   const navigate = useNavigate();
   const location = useLocation();
   const isRegister = location.pathname.toLowerCase().includes('register');
@@ -40,7 +39,7 @@ const LoginPage = () => {
   const handleRemoveImage = () => {
     setUserDetails((prev) => ({ ...prev, img: '' }));
     if (fileInputRef.current) {
-      fileInputRef.current.value = ''; // مسح القيمة من الحقل
+      fileInputRef.current.value = '';
     }
   };
 
@@ -63,6 +62,7 @@ const LoginPage = () => {
         headers: { "Content-Type": "multipart/form-data" },
       })
         .then(() => {
+     
           setLoading(false);
           navigate("/Login");
         })
@@ -108,7 +108,7 @@ const LoginPage = () => {
   return (
     <div className="login-page">
       <Helmet>
-         <link rel="canonical" href="https://madeformanners.com/login" />
+        <link rel="canonical" href="https://madeformanners.com/login" />
         <title>Login -Register |{websiteTitle}</title>
         <meta
           name="description"
@@ -139,6 +139,14 @@ const LoginPage = () => {
               <input type={showPassword ? 'text' : 'password'} name="password" value={userDetails.password || ''} onChange={handleChange} required placeholder="Enter your password" />
               <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} eye-icon`} onClick={() => setShowPassword(!showPassword)}></i>
             </div>
+       
+            {!isRegister && (
+              <p className="text-center mt-3">
+                <NavLink to="/forgot-password" className="text-600 underline" >
+                  Forgot your password?
+                </NavLink>
+              </p>
+            )}
 
             {isRegister && (
               <>
@@ -167,8 +175,9 @@ const LoginPage = () => {
           <button type="submit" className="login-btn">{isRegister ? 'Register' : 'Login'}</button>
 
           {!isRegister && (
+
             <p className="text-center mt-4">
-              Don't have an account? <NavLink to="/Register" className="text-600 underline" style={{ color: '#2a143d' }}>Register here</NavLink>
+              Don't have an account? <NavLink to="/Register" className="text-600 underline" >Register here</NavLink>
             </p>
           )}
         </form>

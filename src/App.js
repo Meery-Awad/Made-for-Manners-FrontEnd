@@ -16,6 +16,8 @@ import ContactUs from "./components/Contact us/ContactUs";
 import Footer from "./components/Footer/Footer";
 import PaymentFailedPage from "./components/Courses/CanceledPayment";
 import PolicyPage from "./components/Footer/policy";
+import ForgotPassword from "./components/LogIn/ForgotPassword";
+import ResetPassword from "./components/LogIn/resetPassword";
 
 function App() {
 
@@ -40,7 +42,9 @@ function App() {
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />
             <Route path="/payment_failed" element = {<PaymentFailedPage/>}/>
-            <Route path="policy" element={<PolicyPage/>}/>
+            <Route path="/policy" element={<PolicyPage/>}/>
+            <Route path="/forgot-password" element={<ForgotPassword/>}/>
+            <Route path="/reset-password/:token" element={<ResetPassword/>}/>
             {/* other rotes  */}
           
         </Routes>

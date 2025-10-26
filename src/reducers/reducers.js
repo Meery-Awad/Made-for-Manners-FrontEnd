@@ -13,10 +13,10 @@ const reminders = (state = [], action) => {
         const [reload, setReload] = useState(false);
 
         //   const serverUrl = 'http://localhost:5000'
-        const serverUrl = 'https://madeformanners-backend.onrender.com'
+         const serverUrl = 'https://madeformanners-backend.onrender.com'
         const courseValid = 'Please note that the course will be available to watch for only one week after the course date'
         // <SEO>
-        const websiteTitle= `Made for Manners`
+        const websiteTitle = `Made for Manners`
         const pageDescription = `Discover ${websiteTitle} — your destination for online etiquette and social skills courses. Learn professional behavior, confidence, and refined manners through engaging video lessons and expert guidance.`;
 
         const pageKeywords = `etiquette courses online, social skills training, professional behavior classes, manners lessons, ${websiteTitle}, online etiquette school, learn etiquette, business etiquette, communication skills`;
@@ -34,7 +34,7 @@ const reminders = (state = [], action) => {
         const registerKeyWords = `${websiteTitle} registration, create an account, sign up, enroll online`;
         // </SEO>
 
-        
+
 
         const [userDetails, setUserDetails] = useState(() => {
             const stored = localStorage.getItem(`user`);
@@ -46,32 +46,13 @@ const reminders = (state = [], action) => {
         const [updatedData, setUpdatedData] = useState(userDetails);
         const [selectedCourse, setSelectedCourse] = useState(0);
         const [showDetails, setShowDetails] = useState(false);
-        const color = '#817f7fff'
+       
         const categories = [
-            {
-                id: 0,
-                level: 'Kids',
-                icon: '',
-                color: color
-            },
-            {
-                id: 1,
-                level: 'Adults',
-                icon: '',
-                color: color,
-            },
-            {
-                id: 2,
-                level: 'Girls',
-                icon: '',
-                color: color,
-            },
-            {
-                id: 3,
-                level: 'Important figures',
-                icon: '',
-                color: color,
-            }
+            { id: 0, level: 'Youth', icon: '', color: 'blue' },
+            { id: 1, level: 'Student', icon: '', color: 'green' },
+            { id: 2, level: 'Professional & Executive', icon: '', color: 'pink' },
+            { id: 3, level: 'International Etiquette', icon: '', color: 'gold' },
+            { id: 4, level: 'Private Coaching', icon: '', color: 'gold' }
         ]
         const [courseDetails, setCourseDetails] = useState({
             id: '',
@@ -127,7 +108,7 @@ const reminders = (state = [], action) => {
             serverUrl,
             pageDescription, pageKeywords,
             contactUsKeyWords, aboutUsKeyWords, HomePageKeyWords, coursesKeyWords,
-            loginKeyWords, registerKeyWords, 
+            loginKeyWords, registerKeyWords,
             websiteTitle
 
         };

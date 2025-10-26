@@ -68,7 +68,6 @@ const AboutUs = () => {
             <div className="container">
                 <h1>About Us</h1>
 
-                {/* أقسام aboutSections بدون صورة */}
                 <div className="content">
                     <div className="text" data-animate="slide-right">
                         {aboutSections.map((section, index) => (
@@ -80,7 +79,7 @@ const AboutUs = () => {
                     </div>
                 </div>
 
-                {/* Founder’s Message مع الصورة */}
+               
                 <div className="content founder-message">
                     <div className="image" data-animate="slide-left">
                         <img src={teacherImg} alt="Julia - Founder" />
