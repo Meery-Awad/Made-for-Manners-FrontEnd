@@ -1,15 +1,12 @@
 @import '../../App.scss';
 
 .contact-us {
-
   display: flex;
   flex-direction: column;
   align-items: center;
 
-
   .header {
     text-align: center;
-    
     margin-bottom: 2rem;
 
     .header-img {
@@ -19,8 +16,8 @@
     }
 
     h1 {
-    @include h1;
-    margin : 1rem auto;
+      @include h1;
+      margin: 1rem auto;
     }
 
     p {
@@ -41,7 +38,6 @@
     grid-template-columns: 1fr;
     gap: 3rem;
 
-
     @media (min-width: 768px) {
       grid-template-columns: 1fr 1fr;
     }
@@ -52,8 +48,9 @@
       gap: 1rem;
 
       input,
-      textarea {
-        border: 1px solid #d1d5db;
+      textarea,
+      select {
+        border: 1px solid $Second-Color;
         border-radius: 0.5rem;
         padding: 0.75rem 1rem;
         font-size: 1rem;
@@ -61,8 +58,60 @@
 
         &:focus {
           border-color: $Second-Color;
-          box-shadow: 0 0 0 3px $Second-Color;
+          box-shadow: 0 0 0 2px $Second-Color;
           outline: none;
+        }
+      }
+
+      .error {
+        color: $alert-color;
+      }
+      .success{
+        color: #16a34a;
+      }
+
+      .phone-input {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+
+        .phone-wrapper {
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          .country-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            font-size: 1rem;
+            cursor: pointer;
+          }
+
+          .phone-field {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            overflow: hidden;
+
+            .phone-code {
+              background: #f3f4f6;
+              padding: 0.75rem 1rem;
+              font-weight: 500;
+              color: $Font-Color;
+            }
+
+            input {
+              flex: 1;
+              border: none;
+              outline: none;
+              padding: 0.75rem 1rem;
+              font-size: 1rem;
+            }
+          }
         }
       }
 
