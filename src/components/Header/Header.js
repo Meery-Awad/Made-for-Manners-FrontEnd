@@ -9,7 +9,7 @@ import { io } from "socket.io-client";
 import notificationSound from '../../sounds/notification.mp3'
 
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://madeformanners-backend.onrender.com", {
   transports: ["websocket"],
 });
 
