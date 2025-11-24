@@ -15,6 +15,7 @@ const updateStatusIcons = (uid, type, enabled) => {
 // ======================
 // Hamburger Control
 // ======================
+
 export const initAdminControls = (userDetails) => {
   let hamburger = document.getElementById("admin-hamburger");
   if (!hamburger) {
@@ -79,6 +80,7 @@ export const initAdminControls = (userDetails) => {
           remoteUser.audioTrack.play();
           updateStatusIcons(uid, "audio", true);
           micBtn.innerHTML = '<i class="fa fa-microphone"></i>';
+         
         }
       };
 

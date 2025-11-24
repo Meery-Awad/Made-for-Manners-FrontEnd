@@ -4,19 +4,21 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import logo from '../../images/img.jpg';
 import { useBetween } from 'use-between';
 import { useSelector } from 'react-redux';
-import { Dropdown } from 'react-bootstrap';
+import { Alert, Dropdown } from 'react-bootstrap';
 import { io } from "socket.io-client";
 import notificationSound from '../../sounds/notification.mp3'
+import axios from 'axios';
 
 
-const socket = io("https://madeformanners-backend.onrender.com", {
+const socket = io("http://localhost:5000", {
   transports: ["websocket"],
 });
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const state = useSelector((state) => state.data);
-  const { userDetails, setUserDetails, setLoading, notifications, setNotifications, admin } =
+  const { userDetails, setUserDetails, setLoading, notifications,
+    setNotifications, newNotifications, setnewNotifications, admin, serverUrl } =
     useBetween(state.useShareState);
 
   const { id, img } = userDetails;
@@ -27,6 +29,8 @@ const Header = () => {
   const showToast = (noti) => {
     setToast(noti);
     setShowing(true);
+    setnewNotifications(prev => [noti, ...prev]);
+    setNotifications(prev => [noti, ...prev]);
 
     const audio = new Audio(notificationSound);
     audio.play();
@@ -38,7 +42,6 @@ const Header = () => {
   };
 
   useEffect(() => {
-    setNotifications(userDetails.notifications);
 
     const handleNewCourse = (data) => {
       const newNoti = {
@@ -49,10 +52,11 @@ const Header = () => {
         date: data.date,
         time: data.time,
       };
-      setNotifications(prev => [ ...prev,newNoti ]);
+
       showToast(newNoti);
 
     };
+
     const handleReminder = (data) => {
       const id = userDetails._id || userDetails.id || userDetails.userId
       if (data.userId === id) {
@@ -64,7 +68,7 @@ const Header = () => {
           time: data.time,
           Notidate: data.Notidate,
         };
-        setNotifications(prev =>[ ...prev,newNoti ]);
+
         showToast(newNoti);
 
       }
@@ -79,7 +83,7 @@ const Header = () => {
           date: data.date,
           Notidate: data.Notidate,
         };
-        setNotifications(prev => [ ...prev, newNoti ]);
+
         showToast(newNoti);
       }
 
@@ -95,7 +99,7 @@ const Header = () => {
       socket.off("contact_message", handleContact);
     };
   }, [userDetails]);
- 
+
 
   const navItems = [
     { id: 1, label: 'home' },
@@ -121,12 +125,30 @@ const Header = () => {
         img: '',
         courses: [],
         notifications: [],
+        newNotifications: []
       });
       setNotifications([]);
+      setnewNotifications([])
       localStorage.removeItem("userID");
       navigate('/');
       setLoading(false);
     }, 1500);
+  };
+  const handleNotification = async () => {
+    if (newNotifications.length > 0) {
+
+      try {
+
+        await axios.post(`${serverUrl}/api/notification/mark-read`, {
+          email: userDetails.email
+        });
+
+
+        setnewNotifications([]);
+      } catch (err) {
+        console.error("Error marking notifications as read:", err);
+      }
+    }
   };
 
   return (
@@ -144,17 +166,17 @@ const Header = () => {
             {id !== '' && (
               <div>
 
-                {notifications.length > 0 &&
-                  <div className='notificationMarks'>{notifications.length}</div>
+                {newNotifications.length > 0 &&
+                  <div className='notificationMarks'>{newNotifications.length}</div>
                 }
                 <Dropdown align="end">
-                  <Dropdown.Toggle as="div" className="no-arrow cursor-pointer">
-                    <i className="fa-solid fa-bell"></i>
-
+                  <Dropdown.Toggle as="div" className="no-arrow cursor-pointer"
+                  >
+                    <i className="fa-solid fa-bell" onClick={() => handleNotification()}></i>
                   </Dropdown.Toggle>
                   <Dropdown.Menu className='NotiContaner'>
                     {notifications.length === 0 && <div className="px-3 py-2 text-gray-500">No notifications</div>}
-                    {notifications.slice().reverse().map((noti, index) => (
+                    {notifications.map((noti, index) => (
                       <Dropdown.Item key={index} className='notification'
                         onClick={() => {
                           if (noti.type == "course") navigate("/courses");

@@ -54,10 +54,10 @@
         background-color: $alert-color;
         margin: -6px 22px;
         display: flex;
-        align-items: center; 
-        justify-content: center; 
+        align-items: center;
+        justify-content: center;
         color: #ffff;
-        
+
     }
 
     .profileImg {
@@ -93,6 +93,7 @@
     flex-direction: column;
     gap: 0.5rem;
     pointer-events: none;
+    position: fixed;
 
     &.fade-in {
         opacity: 1;

@@ -87,7 +87,9 @@ const LoginPage = () => {
             password: res.data.password,
             img: res.data.img,
             courses: res.data.courses,
-            notifications: res.data.notifications
+            notifications: res.data.notifications,
+            newNotifications : res.data.newNotifications
+
           };
           setUpdatedData(newUser);
           setUserDetails(newUser);
@@ -103,7 +105,8 @@ const LoginPage = () => {
   };
 
   useEffect(() => {
-    setUserDetails({ id: '', name: '', email: '', password: '', confirmPassword: '', img: '', courses: [], notifications: [] });
+    setUserDetails({ id: '', name: '', email: '', password: '',
+       confirmPassword: '', img: '', courses: [], notifications: [] , newNotifications:[]});
     setErorr('');
   }, [location]);
 

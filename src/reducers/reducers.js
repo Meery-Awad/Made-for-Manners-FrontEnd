@@ -5,14 +5,13 @@ import axios from 'axios';
 const reminders = (state = [], action) => {
 
     const useShareState = () => {
-
         const [editOrAdd, setEditOrAdd] = useState('Add')
         const [courses, setCourses] = useState([])
         const [allCourses, setAllCourses] = useState([])
         const [Loading, setLoading] = useState(false);
         const [reload, setReload] = useState(false);
-        // const serverUrl = 'http://localhost:5000'
-        const serverUrl = 'https://madeformanners-backend.onrender.com'
+        const serverUrl = 'http://localhost:5000'
+        // const serverUrl = 'https://madeformanners-backend.onrender.com'
         const courseValid = 'Please note that the course will be available to watch for only one week after the course date'
         // <SEO>
 
@@ -48,9 +47,11 @@ const reminders = (state = [], action) => {
             confirmPassword: '',
             img: '',
             courses: [],
-            notifications: []
+            notifications: [],
+            newNotifications: []
         });
-         const [notifications, setNotifications] = useState(userDetails.notifications);
+        const [notifications, setNotifications] = useState(userDetails.notifications);
+        const [newNotifications, setnewNotifications] = useState(userDetails.newNotifications);
         //  localStorage.removeItem("userID");
 
         const [userId, setUserId] = useState(() => {
@@ -58,19 +59,21 @@ const reminders = (state = [], action) => {
             return storedUser ? JSON.parse(storedUser)?.id || "" : "";
         });
         useEffect(() => {
-           if(userId){
-            const fetchUser = async () => {
-                try {
-                    const res = await axios.get(`${serverUrl}/api/users/${userId}`);
-                    setUserDetails(res.data);
-                    
-                } catch (error) {
-                    console.log("Error fetching user:", error);
-                }
-            };
+            if (userId) {
+                const fetchUser = async () => {
+                    try {
+                        const res = await axios.get(`${serverUrl}/api/users/${userId}`);
+                        setUserDetails(res.data);
+                        setNotifications(res.data.notifications.reverse());
+                        setnewNotifications(res.data.newNotifications.reverse());
 
-            fetchUser();
-        }
+                    } catch (error) {
+                        console.log("Error fetching user:", error);
+                    }
+                };
+
+                fetchUser();
+            }
         }, []);
 
         const [updatedData, setUpdatedData] = useState(userDetails);
@@ -115,7 +118,7 @@ const reminders = (state = [], action) => {
             };
 
             CoursesData();
-        }, [reload,notifications]);
+        }, [reload, notifications]);
 
         useEffect(() => {
             localStorage.setItem(`user`, JSON.stringify(userDetails));
@@ -141,7 +144,8 @@ const reminders = (state = [], action) => {
             contactUsKeyWords, aboutUsKeyWords, HomePageKeyWords, coursesKeyWords,
             loginKeyWords, registerKeyWords,
             websiteTitle,
-            notifications, setNotifications
+            notifications, setNotifications,
+            newNotifications, setnewNotifications
 
         };
     };
