@@ -5,6 +5,7 @@ import './SortAndFilter.scss';
 import { useEffect, useRef, useState } from 'react';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import { useLocation } from 'react-router-dom';
 
 const SortAndFilter = () => {
     const state = useSelector((state) => state.data);
@@ -12,14 +13,19 @@ const SortAndFilter = () => {
         courses, setCourses,
         categories,
         reload, setReload,
+        userDetails
     } = useBetween(state.useShareState);
-    
+
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedLevels, setSelectedLevels] = useState([]);
     const [priceRange, setPriceRange] = useState([0, 0]);
     const [maxCoursePrice, setMaxCoursePrice] = useState(500);
+    const [showBookedOnly, setShowBookedOnly] = useState(false);
+
     const originalCoursesRef = useRef([]);
+    const location = useLocation();
+    const { courseType } = location.state || {};
 
     useEffect(() => {
         if (Array.isArray(courses) && courses.length > 0 && originalCoursesRef.current.length === 0) {
@@ -28,9 +34,9 @@ const SortAndFilter = () => {
             setMaxCoursePrice(maxPrice);
             setPriceRange([0, maxPrice]);
         }
-        
+
     }, [courses]);
-    
+
     const handleLevelChange = (level) => {
         if (level === 'all') {
             setSelectedLevels([]);
@@ -45,15 +51,22 @@ const SortAndFilter = () => {
 
     const handleFilter = () => {
         let filtered = [...originalCoursesRef.current];
-     
+
+        if (showBookedOnly && userDetails?.email && courseType == 'Online Course') {
+            filtered = filtered.filter(course =>
+                Array.isArray(course.bookedUsers) &&
+                course.bookedUsers.some(u => u.email === userDetails.email)
+            );
+        }
+
         if (selectedLevels.length > 0) {
             filtered = filtered.filter(course =>
                 Array.isArray(course.categories) &&
                 selectedLevels.every(level => course.categories.includes(level))
             );
-           
+
         }
-        
+
         if (startDate) {
             const start = new Date(startDate);
             filtered = filtered.filter(course => new Date(course.date) >= start);
@@ -72,7 +85,7 @@ const SortAndFilter = () => {
 
     useEffect(() => {
         handleFilter();
-    }, [selectedLevels, startDate, endDate, priceRange]);
+    }, [selectedLevels, startDate, endDate, priceRange, showBookedOnly]);
 
     const sortItems = (type) => {
         const sorted = [...courses];
@@ -92,10 +105,10 @@ const SortAndFilter = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="p-3" style={{ minWidth: '300px' }}>
-                   <div> Filter:</div>
-                    
+                    <div> Filter:</div>
+
                     <strong>By Categories</strong>
-                  
+
                     <div className="categories-checkboxes mt-2">
                         <div className="d-flex align-items-center mb-1">
                             <input
@@ -106,7 +119,7 @@ const SortAndFilter = () => {
                             />
                             <label htmlFor={`cat-all`} style={{ marginLeft: 6 }}>All</label>
                         </div>
-                    
+
                         {categories.map((item, index) => (
                             <div key={index} className="d-flex align-items-center mb-1">
                                 <input
@@ -122,7 +135,7 @@ const SortAndFilter = () => {
                             </div>
                         ))}
                     </div>
-              
+
 
                     <div className="mt-3">
                         <strong>By Date</strong>
@@ -154,13 +167,29 @@ const SortAndFilter = () => {
                             <span>${priceRange[1]}</span>
                         </div>
                     </div>
+                    {userDetails && (
+                        <div className="mt-3">
+                            <strong>Status</strong>
+                            <div className="d-flex align-items-center mt-2">
+                                <input
+                                    type="checkbox"
+                                    id="bookedOnly"
+                                    checked={showBookedOnly}
+                                    onChange={() => setShowBookedOnly(!showBookedOnly)}
+                                />
+                                <label htmlFor="bookedOnly" style={{ marginLeft: 6 }}>
+                                    Booked Only
+                                </label>
+                            </div>
+                        </div>
+                    )}
                 </Dropdown.Menu>
             </Dropdown>
 
             <Dropdown>
                 <Dropdown.Toggle><i className="fa-solid fa-up-down"></i></Dropdown.Toggle>
                 <Dropdown.Menu>
-                     <div> Sort:</div>
+                    <div> Sort:</div>
                     <Dropdown.Item onClick={() => sortItems('nameAsc')}>Name A → Z</Dropdown.Item>
                     <Dropdown.Item onClick={() => sortItems('nameDesc')}>Name Z → A</Dropdown.Item>
                     <Dropdown.Item onClick={() => sortItems('dateAsc')}>Date: Oldest → Newest</Dropdown.Item>
@@ -176,9 +205,10 @@ const SortAndFilter = () => {
                     setEndDate('');
                     setSelectedLevels([]);
                     setPriceRange([0, maxCoursePrice]);
+                    setShowBookedOnly(false);
                     setCourses(originalCoursesRef.current);
                 }}
-                
+
             />
         </div>
     );

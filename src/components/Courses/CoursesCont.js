@@ -32,10 +32,12 @@ const CoursesContaner = ({ type = "all" }) => {
     coursesKeyWords,
     websiteTitle,
   } = useBetween(state.useShareState);
+  const location = useLocation();
+  const { courseType } = location.state || {}; // 'Face-to-Face' , 'Online'
 
   const [showBookedUsers, setShowBookedUsers] = useState(false);
   const [bookedUsersList, setBookedUsersList] = useState([]);
-  const [visibleCount, setVisibleCount] = useState(4); 
+  const [visibleCount, setVisibleCount] = useState(4);
   const openBookedUsers = (users) => {
     setBookedUsersList(users);
     setShowBookedUsers(true);
@@ -47,10 +49,10 @@ const CoursesContaner = ({ type = "all" }) => {
   const { handleWatch, showModal, setShowModal, modalMsg, modalTitle, setModalMsg } = useWatch();
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
-  const location = useLocation();
+    window.scrollTo(0, 0);
+
+  }, []);
 
   const openDetails = (course) => {
     setSelectedCourse(course);
@@ -76,13 +78,14 @@ const CoursesContaner = ({ type = "all" }) => {
       });
   };
 
-  const editCourse = (index) => {
-    const CourseToEdit = courses[index];
-    if (CourseToEdit) {
+  const editCourse = (item) => {
+
+    if (item) {
       setEditOrAdd("Edit");
-      setCourseDetails({ ...CourseToEdit, id: CourseToEdit._id });
+      setCourseDetails({ ...item, id: item._id });
     }
   };
+
 
   const handleCheckout = async (courseName, price, courseId) => {
     if (!userDetails.id) {
@@ -106,21 +109,28 @@ const CoursesContaner = ({ type = "all" }) => {
   };
 
   const playCoursesList = () => {
-    const displayedCourses =
+    let displayedCourses =
       type === "recommended"
         ? courses.filter(
-            (course) =>
-              course.recommended &&
-              (userDetails.email === admin.email ||
-                (course.isNotLive && course.link) ||
-                !course.isNotLive)
-          )
-        : courses.filter(
-            (course) =>
-              userDetails.email === admin.email ||
+          (course) =>
+            course.recommended &&
+            (userDetails.email === admin.email ||
               (course.isNotLive && course.link) ||
-              !course.isNotLive
-          );
+              !course.isNotLive)
+        )
+        : courses.filter(
+          (course) =>
+            userDetails.email === admin.email ||
+            (course.isNotLive && course.link) ||
+            !course.isNotLive
+        );
+
+    if (courseType) {
+      displayedCourses = displayedCourses.filter(
+        (course) =>
+          course.coursePlace === (courseType === "Face-to-Face Course" ? "Face-to-Face Course" : "Online Course")
+      );
+    }
 
     if (displayedCourses.length === 0)
       return (
@@ -129,7 +139,7 @@ const CoursesContaner = ({ type = "all" }) => {
         </p>
       );
 
-    
+
     const visibleCourses =
       type === "recommended"
         ? displayedCourses.slice(0, visibleCount)
@@ -137,12 +147,11 @@ const CoursesContaner = ({ type = "all" }) => {
 
     return visibleCourses.map((item, index) => {
       const isAlreadyBooked = userDetails.courses.some((c) => c._id === item._id);
-
       const uniqueUsers = item.bookedUsers
         ? item.bookedUsers.filter(
-            (user, index, self) =>
-              index === self.findIndex((u) => u.email === user.email)
-          )
+          (user, index, self) =>
+            index === self.findIndex((u) => u.email === user.email)
+        )
         : [];
 
       return (
@@ -167,20 +176,26 @@ const CoursesContaner = ({ type = "all" }) => {
                 }
               }}
             >
-              <i className="fas fa-user"></i> {uniqueUsers.length -1 }
+              <i className="fas fa-user"></i> {uniqueUsers.length - 1}
             </span>
           </div>
 
           <div className="details">
             <div className="bottomRow">
+              {/* {item.coursePlace == "Online Course" &&  */}
               <div className="price">
-              £ {item.price}  {item.price === 0 && <p>(Free)</p>}
+                £ {item.coursePlace == "Online Course" ? (
+                  <span className="cost">{item.price}{item.price === 0 && <p>(Free)</p>}</span>
+                ) : <div className=" cost hiddenPrice">***</div>}
+
               </div>
+
+              {/* } */}
               {userDetails.email === admin.email && type !== "recommended" && (
                 <div className="icons" onClick={(e) => e.stopPropagation()}>
                   <i
                     className="fas fa-edit"
-                    onClick={() => editCourse(index)}
+                    onClick={() => editCourse(item)}
                     title="Edit"
                   ></i>
                   <i
@@ -190,6 +205,10 @@ const CoursesContaner = ({ type = "all" }) => {
                   ></i>
                 </div>
               )}
+              {type == 'recommended' && (
+                <div className="courseType">
+                  {item.coursePlace}
+                </div>)}
             </div>
 
             <div className="name">{item.name}</div>
@@ -203,38 +222,48 @@ const CoursesContaner = ({ type = "all" }) => {
               </span>
             </div>
             <div className="description">{item.description}</div>
+            {item.coursePlace == 'Online Course' ? (
+              isAlreadyBooked || userDetails.email === admin.email ? (
+                <button
+                  className="courseBtn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    const now = new Date();
+                    const courseDate = new Date(item.date);
+                    const [endHour, endMinute] = item.endtime.split(":");
+                    const endDateTime = new Date(courseDate);
+                    endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
 
-            {isAlreadyBooked || userDetails.email === admin.email ? (
-              <button
+                    if (now > endDateTime) {
+                      openDetails(item);
+                    } else {
+                      handleWatch(item);
+                    }
+                  }}
+                >
+                  Join
+                </button>
+              ) : (
+                <button
+                  className="courseBtn"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    handleCheckout(item.name, item.price, item._id);
+                  }}
+                >
+                  Book
+                </button>
+              )
+            ) :(<button
                 className="courseBtn"
                 onClick={(e) => {
                   e.stopPropagation();
-                  const now = new Date();
-                  const courseDate = new Date(item.date);
-                  const [endHour, endMinute] = item.endtime.split(":");
-                  const endDateTime = new Date(courseDate);
-                  endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
-
-                  if (now > endDateTime) {
-                    openDetails(item);
-                  } else {
-                    handleWatch(item);
-                  }
+                  window.location.href = "mailto:hello@madeformanners.com";
                 }}
               >
-                Join
+                Inquery
               </button>
-            ) : (
-              <button
-                className="courseBtn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleCheckout(item.name, item.price, item._id);
-                }}
-              >
-                Book
-              </button>
-            )}
+              )}
           </div>
         </div>
       );
@@ -270,7 +299,7 @@ const CoursesContaner = ({ type = "all" }) => {
         )}
       </div>
 
-   
+
       {type === "recommended" && totalRecommended > 4 && (
         <div className="btn-wrapper1">
           {visibleCount < totalRecommended && (

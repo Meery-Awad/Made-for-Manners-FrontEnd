@@ -2,11 +2,14 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "./ProfileModal.scss";
+import "./Profile.scss";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useBetween } from "use-between";
+import { useNavigate } from "react-router-dom";
+ 
 
-const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
+const ProfileModal = () => {
   const [formData, setFormData] = useState({
     id: "",
     name: "",
@@ -15,25 +18,57 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
     confirmPassword: "",
     img: "",
   });
+  const [isEditing, setIsEditing] = useState(false);
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState('')
   const state = useSelector((state) => state.data);
-  const { serverUrl, setLoading } = useBetween(state.useShareState);
+  const { serverUrl, setLoading, userDetails, setUserDetails } = useBetween(state.useShareState);
+  const [deleteModal, setDeleteModal] = useState(false);
+
+  const { name, img, email, password } = userDetails;
 
   useEffect(() => {
+
     if (userDetails) {
       setFormData({
         id: userDetails.id || userDetails._id || "",
-        name: userDetails.name || "",
-        email: userDetails.email || "",
-        password: userDetails.password || "",
-        confirmPassword: userDetails.password || "",
-        img: userDetails.img || "",
+        name: name || "",
+        email: email || "",
+        password: password || "",
+        confirmPassword: password || "",
+        img: img || "",
       });
     }
   }, [userDetails]);
+
+  const handleDelete = async () => {
+    try {
+      setLoading(true);
+      const userId = userDetails.id || userDetails._id;
+      await axios.delete(`${serverUrl}/api/users/deleteUser/${userId}`);
+      setTimeout(() => {
+        setUserDetails({
+          id: '',
+          name: '',
+          email: '',
+          password: '',
+          confirmPassword: '',
+          img: '',
+          courses: [],
+        });
+
+        localStorage.removeItem("userID");
+        navigate('/');
+        setLoading(false);
+      })
+    } catch (err) {
+      alert(err.response?.data?.message || "Error deleting account");
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e) => {
     setError('')
@@ -60,7 +95,7 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
         formData
       );
       setUserDetails(res.data.user);
-      handleClose();
+      // handleClose();
       setLoading(false);
     } catch (err) {
 
@@ -71,96 +106,131 @@ const ProfileModal = ({ show, handleClose, userDetails, setUserDetails }) => {
   };
 
   return (
-    <Modal show={show} onHide={handleClose} className="ProfileModal" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>Edit Profile</Modal.Title>
-      </Modal.Header>
+    // <Modal show={show} onHide={handleClose} className="ProfileModal" centered>
+    //   <Modal.Header closeButton>
+    //     <Modal.Title>Edit Profile</Modal.Title>
+    //   </Modal.Header>
 
-      <Modal.Body>
-        {error != '' && <p className="noti">{error}</p>}
-        <div className="form-group mb-2">
-          <label>Name</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
-        <div className="form-group mb-2">
-          <label>Email</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="form-control"
-          />
-        </div>
+    //   <Modal.Body>
+    <div className="ProfileModal ProfilePage">
+      <div className="ProfileHeader">
+      <button className="edit-btn" onClick={() => setIsEditing(!isEditing)} >
+        <i className="fas fa-pen"></i>
+      </button>
+      <button className="delete-btn" onClick={() => setDeleteModal(true)}>
+        <i className="fas fa-trash" style={{ color: 'rgb(243, 98, 98)' }}></i>
+      </button>
+      </div>
+      {error != '' && <p className="noti">{error}</p>}
+       <div className="mb-2">
+          {formData.img && (
+        <img
+          src={formData.img}
+          alt="Preview"
+          className="img-preview mt-2"
+        />
+      )}
+        <label>Profile Image</label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageChange}
+          className="form-control"
+          disabled={!isEditing}
+        />
+      </div>
+    
+      <div className="mb-2">
+        <label>Name</label>
+        <input
+          type="text"
+          name="name"
+          value={formData.name}
+          onChange={handleChange}
+          className="form-control"
+          disabled={!isEditing}
+        />
+      </div>
+      <div className=" mb-2">
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="form-control"
+          disabled={!isEditing}
+        />
+      </div>
 
-        {/* Password */}
-        <div className="form-group mb-2 position-relative">
-          <label>Password</label>
-          <input
-            type={showPassword ? "text" : "password"}
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-            className="form-control"
-          />
-          <i
-            className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"
-              } eye-icon`}
-            onClick={() => setShowPassword(!showPassword)}
-          ></i>
-        </div>
+      {/* Password */}
+      <div className=" mb-2 position-relative">
+        <label>Password</label>
+        <input
+          type={showPassword ? "text" : "password"}
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          className="form-control"
+          disabled={!isEditing}
+        />
+        <i
+          className={`fas ${showPassword ? "fa-eye-slash" : "fa-eye"
+            } eye-icon`}
+          onClick={() => setShowPassword(!showPassword)}
+        ></i>
+      </div>
 
-        {/* Confirm Password */}
-        <div className="form-group mb-2 position-relative">
-          <label>Confirm Password</label>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-            className="form-control"
-          />
-          <i
-            className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"
-              } eye-icon`}
-            onClick={() =>
-              setShowConfirmPassword(!showConfirmPassword)
-            }
-          ></i>
-        </div>
+      {/* Confirm Password */}
+      <div className=" mb-2 position-relative">
+        <label>Confirm Password</label>
+        <input
+          type={showConfirmPassword ? "text" : "password"}
+          name="confirmPassword"
+          value={formData.confirmPassword}
+          onChange={handleChange}
+          className="form-control"
+          disabled={!isEditing}
+        />
+        <i
+          className={`fas ${showConfirmPassword ? "fa-eye-slash" : "fa-eye"
+            } eye-icon`}
+          onClick={() =>
+            setShowConfirmPassword(!showConfirmPassword)
+          }
+        ></i>
+      </div>
 
-        <div className="form-group mb-2">
-          <label>Profile Image</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageChange}
-            className="form-control"
-          />
-        </div>
-        {formData.img && (
-          <img
-            src={formData.img}
-            alt="Preview"
-            className="img-preview mt-2"
-          />
-        )}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="secondary" onClick={handleClose}>
-          Cancel
-        </Button>
-        <Button variant="primary" onClick={handleSave}>
-          Save
-        </Button>
-      </Modal.Footer>
-    </Modal>
+     
+      {/* Delete Account Modal */}
+      <Modal show={deleteModal} onHide={() => setDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Account</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Are you sure you want to delete your account? This action cannot be undone.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button onClick={handleDelete}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </div>
+
+    //   </Modal.Body>
+    //   <Modal.Footer>
+    //     <Button variant="secondary" onClick={handleClose}>
+    //       Cancel
+    //     </Button>
+    //     <Button variant="primary" onClick={handleSave}>
+    //       Save
+    //     </Button>
+    //   </Modal.Footer>
+    // </Modal> 
   );
 };
 

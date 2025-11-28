@@ -8,9 +8,10 @@ const PaymentFailedPage = () => {
 
   const onBack = () => navigate("/Courses");
   const onContact = () => navigate("/Contact us");
-
+  
   return (
     <div className="payment-failed-page">
+     
       <div className="card simple">
         <h2>Payment Failed</h2>
         <p>Your payment could not be completed. Please try again or contact us for support.</p>

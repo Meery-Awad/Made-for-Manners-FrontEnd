@@ -209,7 +209,7 @@ const ContactUsUser = () => {
             <Mail className="icon" />
             <span>hello@madeformanners.com</span>
           </a>
-          <a href="tel:+447444617264">
+          {/* <a href="tel:+447444617264">
             <Phone className="icon" />
             <span>+44 7444 617264</span>
           </a>
@@ -220,7 +220,8 @@ const ContactUsUser = () => {
           >
             <MessageCircle className="icon" />
             <span>Chat on WhatsApp</span>
-          </a>
+          </a> */}
+          
         </div>
       </div>
     </div>

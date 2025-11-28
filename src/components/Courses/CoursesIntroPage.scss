@@ -1,0 +1,71 @@
+@import '../../App.scss';
+
+.intro-container {
+  width: 90%;
+  margin: auto;
+  margin-top: $top;
+  padding: 3rem 0;
+}
+
+.intro-section {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4rem;
+}
+
+.intro-section.reverse {
+  flex-direction: row-reverse;
+}
+
+.intro-image {
+  flex: 1;
+}
+
+.intro-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 20px;
+}
+
+.intro-text {
+  flex: 1;
+  padding: 2rem;
+}
+
+.intro-text h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.intro-text p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.intro-btn {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background-color: $First_Color;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: 0.3s;
+}
+
+.intro-btn:hover {
+  background-color: $Second_Color;
+}
+
+@media (max-width: 768px) {
+  .intro-section,
+  .intro-section.reverse {
+    flex-direction: column;
+  }
+
+  .intro-text {
+    padding: 1rem 0;
+    text-align: center;
+  }
+}

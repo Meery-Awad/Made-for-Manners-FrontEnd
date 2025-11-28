@@ -12,6 +12,7 @@ const reminders = (state = [], action) => {
         const [reload, setReload] = useState(false);
         const serverUrl = 'http://localhost:5000'
         // const serverUrl = 'https://madeformanners-backend.onrender.com'
+        // const serverUrl='https://manor-of-manners-backend.onrender.com'
         const courseValid = 'Please note that the course will be available to watch for only one week after the course date'
         // <SEO>
 
@@ -93,12 +94,16 @@ const reminders = (state = [], action) => {
             description: '',
             date: '',
             time: '',
+            endtime: '',
             price: Number,
             recommended: false,
             img: null,
             categories: [],
             bookedUsers: [],
             joinedUsers: [],
+            isNotLive :false,
+            categories:  [],
+            coursePlace: '',
 
         })
         const admin = { email: 'iuliana.esanu28@gmail.com', passport: 'julia12345' };
@@ -118,6 +123,7 @@ const reminders = (state = [], action) => {
             };
 
             CoursesData();
+           
         }, [reload, notifications]);
 
         useEffect(() => {

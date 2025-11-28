@@ -27,7 +27,6 @@ const Profile = () => {
   const { handleWatch, showModal, setShowModal, modalMsg } = useWatch();
   const navigate = useNavigate();
 
-
   const closeDetails = () => {
     setSelectedCourse(null);
     setShowDetails(false);

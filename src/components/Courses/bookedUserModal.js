@@ -15,7 +15,9 @@ const BookedUsersModal = ({ show, onClose, users, userDetails, admin }) => {
     : [];
 
   return (
+
     <Modal show={show} onHide={onClose} centered size="md">
+      
       <Modal.Header closeButton>
         <Modal.Title>Booked Users</Modal.Title>
       </Modal.Header>

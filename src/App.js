@@ -16,6 +16,8 @@ import PaymentFailedPage from "./components/Courses/CanceledPayment";
 import PolicyPage from "./components/Footer/policy";
 import ForgotPassword from "./components/LogIn/ForgotPassword";
 import ResetPassword from "./components/LogIn/resetPassword";
+import Intro from "./components/Courses/CoursesIntroPage";
+import ProfileModal from "./components/Profile/ProfileModal";
 
 function App() {
   return (
@@ -27,11 +29,13 @@ function App() {
         <Routes>
             <Route path="/" element={<Navigate replace to='/home' />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/courses" element={<CoursesPage />} />
+            <Route path="/courses" element={<Intro />} />
+             <Route path="/coursesdetelias" element={<CoursesPage />} />
+            {/* <Route path="/Intro" element ={<Intro/>}/> */}
             <Route path="/videoCall/:courseId" element={<VideoCall />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<LoginPage />} />
-            <Route path="/profile" element={<Profile />} />
+            <Route path="/profile" element={<ProfileModal />} />
             <Route path="/success" element={<SuccessPayment />} />
             <Route path="/about" element={<AboutUs />} />
             <Route path="/contact" element={<ContactUs />} />

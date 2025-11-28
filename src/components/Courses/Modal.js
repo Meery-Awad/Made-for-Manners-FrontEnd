@@ -6,8 +6,11 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import axios from "axios";
 import noPhoto from '../../images/noImg.jpg'
+import { useLocation } from "react-router-dom";
 
 const CourseModal = () => {
+  const location = useLocation();
+  const { courseType } = location.state || {}; // 'Face-to-Face' , 'Online'
 
   const state = useSelector((state) => state.data);
   const {
@@ -28,19 +31,22 @@ const CourseModal = () => {
   const [error, setError] = useState(false);
   const [timeError, setTimeError] = useState(false);
   const errorRef = useRef(null);
+ 
 
-  const { 
-    name, 
-    description, 
-    date, 
-    time, 
-    endtime, 
-    img, 
-    price, 
-    recommended, 
-    isNotLive = false, 
-    categories: selectedCategories = [] 
+  const {
+    name,
+    description,
+    date,
+    time,
+    endtime,
+    img,
+    price,
+    recommended,
+    isNotLive = false,
+    categories: selectedCategories = [],
+    coursePlace,
   } = courseDetails;
+  // alert(coursePlace)
 
   const initCourseModal = () => {
     setCourseDetails({
@@ -49,10 +55,12 @@ const CourseModal = () => {
       date: '',
       time: '',
       endtime: '',
+      coursePlace: '',
       img: null,
       price: 0,
       recommended: false,
       isNotLive: false,
+      coursePlace: courseType,
       categories: [],
       bookedUsers: [],
       joinedUsers: [],
@@ -135,7 +143,8 @@ const CourseModal = () => {
     };
 
     if (editOrAdd === 'Add') {
-     await axios.post(`${serverUrl}/api/courses`, courseData, { headers })
+  
+      await axios.post(`${serverUrl}/api/courses`, courseData, { headers })
         .then((res) => {
           setModalIsOpen(false);
           initCourseModal();
@@ -146,8 +155,9 @@ const CourseModal = () => {
           alert("Error adding course, please try again later");
           setLoading(false);
         });
-        await axios.post(`${serverUrl}/api/notification`, { course: courseData });
+      await axios.post(`${serverUrl}/api/notification`, { course: courseData });
     } else {
+
       axios.put(`${serverUrl}/api/courses/${id}`, courseData, { headers })
         .then((res) => {
           setModalIsOpen(false);
@@ -163,6 +173,7 @@ const CourseModal = () => {
   };
 
   useEffect(() => {
+    
     if (courseDetails.name !== '') {
       setModalIsOpen(true);
     }
@@ -189,10 +200,10 @@ const CourseModal = () => {
 
             {/* Checkbox at the top */}
             <div className="checkBox">
-              <input 
-                type="checkbox" 
-                checked={isNotLive} 
-                onChange={handleNotLiveChange} 
+              <input
+                type="checkbox"
+                checked={isNotLive}
+                onChange={handleNotLiveChange}
               />
               <label className="lable"> Not Live</label>
             </div>
@@ -208,7 +219,6 @@ const CourseModal = () => {
               <label className="lable">Course Price <span className="required">*</span></label>
               <input type="number" name="price" value={price} onChange={handleChange} placeholder="Course Price" required />
             </div>
-
             <div>
               <label className="lable">Course Description <span className="required">*</span></label>
               <textarea name="description" value={description} onChange={handleChange} placeholder="Enter description" rows="3" required></textarea>

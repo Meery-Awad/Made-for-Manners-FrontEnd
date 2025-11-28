@@ -26,6 +26,7 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
             <Modal.Header closeButton >
                 <Modal.Title>{course.name}</Modal.Title>
             </Modal.Header>
+          
             <Modal.Body>
                 <div className="course-details-modal">
                     {booked ? (
