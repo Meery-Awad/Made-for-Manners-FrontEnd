@@ -30,8 +30,9 @@ const CourseModal = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [error, setError] = useState(false);
   const [timeError, setTimeError] = useState(false);
+  const [dateError, setDateError] = useState(false);
   const errorRef = useRef(null);
- 
+
 
   const {
     name,
@@ -117,6 +118,16 @@ const CourseModal = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // to compare only the date, not time
+    const selectedDate = new Date(date);
+
+    if (selectedDate < today) {
+      setDateError(true);
+      if (errorRef.current) errorRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    setDateError(false);
 
     if (!name || !description || !price || !date || !time || !endtime || selectedCategories.length === 0) {
       setError(true);
@@ -143,7 +154,7 @@ const CourseModal = () => {
     };
 
     if (editOrAdd === 'Add') {
-  
+
       await axios.post(`${serverUrl}/api/courses`, courseData, { headers })
         .then((res) => {
           setModalIsOpen(false);
@@ -173,7 +184,7 @@ const CourseModal = () => {
   };
 
   useEffect(() => {
-    
+
     if (courseDetails.name !== '') {
       setModalIsOpen(true);
     }
@@ -199,14 +210,14 @@ const CourseModal = () => {
           <form className="Form" onSubmit={handleSubmit}>
 
             {/* Checkbox at the top */}
-            <div className="checkBox">
+            {/* <div className="checkBox">
               <input
                 type="checkbox"
                 checked={isNotLive}
                 onChange={handleNotLiveChange}
               />
               <label className="lable"> Not Live</label>
-            </div>
+            </div> */}
 
             {error && <p className="error">Please fill out all required fields (*)</p>}
 
@@ -226,7 +237,17 @@ const CourseModal = () => {
 
             <div>
               <label className="lable">Course Date <span className="required">*</span></label>
-              <input type="date" name="date" value={date} onChange={handleChange} className="form-control mb-2" />
+              {dateError && <p className="error">Date cannot be earlier than today</p>}
+              <input
+                type="date"
+                name="date"
+                value={date}
+                onChange={(e) => {
+                  setCourseDetails(prev => ({ ...prev, date: e.target.value }));
+                  setDateError(false);
+                }}
+                className="form-control mb-2"
+              />
             </div>
 
             <div>

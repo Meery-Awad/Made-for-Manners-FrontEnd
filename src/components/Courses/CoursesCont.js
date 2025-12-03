@@ -153,6 +153,7 @@ const CoursesContaner = ({ type = "all" }) => {
             index === self.findIndex((u) => u.email === user.email)
         )
         : [];
+     
 
       return (
         <div
@@ -235,7 +236,8 @@ const CoursesContaner = ({ type = "all" }) => {
                     endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
 
                     if (now > endDateTime) {
-                      openDetails(item);
+                      setModalMsg("Sorry, this course has already taken place.");
+                      setShowModal(true);
                     } else {
                       handleWatch(item);
                     }
@@ -248,22 +250,36 @@ const CoursesContaner = ({ type = "all" }) => {
                   className="courseBtn"
                   onClick={(e) => {
                     e.stopPropagation();
+
+                    const now = new Date();
+                    const courseDate = new Date(item.date);
+                    const [endHour, endMinute] = item.endtime.split(":");
+                    const endDateTime = new Date(courseDate);
+                    endDateTime.setHours(parseInt(endHour), parseInt(endMinute), 0, 0);
+
+                    if (now > endDateTime) {
+                      setModalMsg("Sorry, this course has already taken place.");
+                      setShowModal(true);
+                      return;
+                    }
+
                     handleCheckout(item.name, item.price, item._id);
                   }}
                 >
                   Book
                 </button>
+
               )
-            ) :(<button
-                className="courseBtn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  window.location.href = "mailto:hello@madeformanners.com";
-                }}
-              >
-                Inquery
-              </button>
-              )}
+            ) : (<button
+              className="courseBtn"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.location.href = "mailto:hello@madeformanners.com";
+              }}
+            >
+              Inquery
+            </button>
+            )}
           </div>
         </div>
       );
