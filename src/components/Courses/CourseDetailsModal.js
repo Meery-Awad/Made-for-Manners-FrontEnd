@@ -26,10 +26,10 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
             <Modal.Header closeButton >
                 <Modal.Title>{course.name}</Modal.Title>
             </Modal.Header>
-          
+
             <Modal.Body>
                 <div className="course-details-modal">
-                    {booked ? (
+                    {/* {booked ? (
                         course.link ? (
                             <video src={course.link} controls poster={course.img} />
                         ) : (
@@ -46,8 +46,8 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
                         </p>
                         <img src={course.img} alt={course.name} />
                         </>
-                    )}
-
+                    )} */}
+                    <img src={course.img} alt={course.name} />
                     {booked && (
                         <p className="booked-label"><i className="fas fa-check"></i> {booked}</p>
                     )}
@@ -73,5 +73,6 @@ const CourseDetailsModal = ({ show, onClose, course, onBook, userDetails }) => {
         </Modal>
     );
 };
+
 
 export default CourseDetailsModal;

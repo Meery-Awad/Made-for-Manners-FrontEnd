@@ -5,6 +5,7 @@
     z-index: 1000;
     background-color: $First-Color;
 
+
     .NotiContaner {
         max-height: 80vh;
         overflow-y: auto;
@@ -32,6 +33,7 @@
     ul {
         text-decoration: none;
         padding: 0;
+
     }
 
     .no-arrow::after {
@@ -41,7 +43,7 @@
     .fa-bell {
         cursor: pointer;
         margin: 0px 35px;
-        color: #626262;
+        color: $Font-Color;
         font-size: 1.3rem;
     }
 

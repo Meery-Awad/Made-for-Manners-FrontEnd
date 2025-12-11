@@ -1,13 +1,87 @@
 @import '../../App.scss';
 
 .Home {
-  margin-top: $top;
 
-  .recommended {
-    img {
-      width: 25px;
-      height: 25px;
 
+  .video-hero {
+    background-color: $Second-Color;
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    video {
+      margin-top: 170px;
+    }
+
+    &__video {
+
+      width: 80%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &__overlay {
+      position: absolute;
+      top: 58%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: $Font-Color;
+      z-index: 2;
+      width: 80%;
+
+      h1 {
+        font-size: 2rem;
+        font-weight: 500;
+        margin-bottom: 1.5rem;
+
+        span {
+          display: block;
+          font-size: 1.5rem;
+          font-weight: 350;
+          margin-top: 1.5rem;
+        }
+      }
+    }
+
+    &__buttons {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10%;
+      margin-top: 3rem;
+
+      .btn {
+        text-align: center;
+        padding: 0.4rem 2.9rem;
+        font-size: 1rem;
+        border: none;
+        cursor: pointer;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        letter-spacing: 1.5px;
+        color: $Font-Color;
+        background-color: $First-Color;
+        width: max-content;
+
+        &:hover {
+          background-color: $Second-Color;
+        }
+
+
+      }
+    }
+
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
     }
   }
 
@@ -21,7 +95,7 @@
     padding: 3rem 1rem;
     background-color: #fafafa;
     border-radius: 20px;
-    
+
 
     h1 {
       font-size: $font-Size;
@@ -39,17 +113,17 @@
 
   // --- Intro Section ---
   .intro {
- 
+
     .introCont {
-      margin-top: -5px;
+      margin-top: -25px;
+
     }
 
     p {
-      color: $Font-Color;
+      color: $First-Color;
       font-size: 1.1rem;
-      line-height: 1.5;
+      line-height: 1;
       margin-bottom: 1rem;
-
 
     }
 
@@ -73,11 +147,22 @@
 
   // --- Recommended Section ---
   .recommended {
-   
+    .welcome {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .topic {
-      font-size: $font-Size;
-      font-weight: 600;
-      color: $First-Color;
+      font-size: 2rem;
+
+    }
+
+   .welcome img {
+      width: 25px;
+      height: 25px;
+      margin-top: -15px;
+      // margin-left: 10px;
 
     }
 
@@ -87,6 +172,7 @@
       text-decoration: underline;
       color: $First-Color;
       font-weight: 500;
+      margin-left: 80%;
 
       &:hover {
         color: $Second-Color;
@@ -95,108 +181,153 @@
   }
 
   // --- What We Offer + Programmes Overview ---
-  .what-we-offer {
-    .line-container {
-      @include section-line;
+  .recommended.what-we-offer {
+    background: linear-gradient(
+    to top,          
+    $First-Color 0%,       
+    #6f3fcf 50%,       
+    $Second-Color 100%     
+  );
+  
+    padding: 20px;
+
+    .topic {
+      color: #fff;
     }
 
-    .offer-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
-      flex-wrap: wrap;
+    .four-bubbles-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+      padding: 24px;
+      // background-color: $Second-Color;
+      place-items: center;
+     
 
-      .offer-text {
-        flex: 1 1 400px;
-        max-width: 500px;
 
-        ul {
-          list-style: none;
-          padding: 0;
-
-          strong {
-            color: #5c5c5c;
-            font-weight: bold;
-            font-size: 1.05rem;
-            margin-top: 30px;
-
-          }
-         
-          li {
-            position: relative;
-            padding-left: 1.8rem;
-            margin: 0.8rem 0 1rem;
-            font-size: 1rem;
-            color: #444;
-            line-height: 1.5;
-
-            &::before {
-              content: "•";
-              position: absolute;
-              left: 0;
-              color: $Second-Color;
-              font-size: 1.5rem;
-
-            }
-          }
-        }
+      @media (min-width: 768px) {
+        grid-template-columns: repeat(2, 1fr);
       }
 
-      .offer-image {
-        flex: 1 1 350px;
-        max-width: 550px;
+      .bubble-card {
+        background: #fff;
+        padding: 24px;
+        border: 2px solid #333;
+        border-radius: 40px;
+        box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        position: relative;
+        overflow: visible;
+        width: 55%;
+        height: 90%;
+        margin-top: 40px;
 
-        img {
-          width: 100%;
-          height: auto;
-          border-radius: 20px;
 
-          object-fit: contain;
+        .bubble-image {
+          width: 80px;
+          height: 80px;
+          border-radius: 50%;
+          overflow: hidden;
+          position: absolute;
+          top: -35px;
+          left: 50%;
+          transform: translateX(-50%);
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+          background: #fff;
+          border: 1px solid #333;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
+
+        h2 {
+          margin-top: 48px;
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+
+        p {
+          color: #666;
+          font-size: 0.95rem;
+          line-height: 1.5;
         }
       }
     }
   }
 
-  // --- Follow Us Section ---
-  .follow-us {
-    text-align: center;
-    margin-top: 3rem;
+}
 
-    .social-icons {
-      margin-top: 1.5rem;
-      display: flex;
-      justify-content: center;
-      gap: 1.5rem;
+.identity-section {
+  width: 100%;
+  margin-top: -37px;
+  background-color: $Second-Color;
+}
 
-      a {
-        font-size: 1.8rem;
-        color: $First-Color;
-        transition: 0.3s;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
+.identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
 
-        &:hover {
-          color: $Second-Color;
-          transform: scale(1.1);
-        }
-      }
-    }
+.identity-card {
+  background-size: cover;
+  background-position: center;
+  height: 420px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  padding: 20px;
+}
+
+.card1 {
+  background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20221007/pngtree-successful-business-meeting-etiquette-handshakes-congratulatory-gestures-and-mergeracquisition-concept-photo-image_48970840.jpg'); 
+}
+
+.card2 {
+  background-image: url('https://www.nafeza2world.com/temp/resized/medium_2025-12-06-a7e8a188f3.jpg'); 
+  margin-top: 60px;
+  
+}
+
+.card3 {
+  background-image: url('https://ar.lpcentre.com/_next/image?url=https%3A%2F%2Far-backend.lpcentre.com%2F%2Farticle_header_image%252FEtiquette%2520Skills%25202_1653337701.jpg&w=1200&q=75'); 
+}
+
+.identity-content {
+  background: rgba(255, 255, 255, 0.83);
+  border-radius: 1px;
+  padding: 20px;
+  max-width: 90%;
+  backdrop-filter: blur(4px);
+  background-color: $First-Color;
+  color: $Font-Color;
+}
+
+.identity-content h3 {
+  font-size: 22px;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.identity-content p {
+  line-height: 1.5;
+  font-size: 15px;
+}
+
+/* --- Responsive --- */
+@media (max-width: 900px) {
+  .identity-grid {
+    grid-template-columns: 1fr;
   }
 
-  // --- Philosophy Section ---
-  .philosophy {
-    margin: 2.5rem auto;
+  .card2 {
+    margin-top: 0;
+  }
 
-    text-align: center;
-    font-size: 1.1rem;
-    color: #444;
-    line-height: 1.5;
-
-    p+p {
-      margin-top: 1rem;
-    }
+  .identity-card {
+    height: 380px;
   }
 }

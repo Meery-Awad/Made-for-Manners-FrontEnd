@@ -10,7 +10,7 @@ import notificationSound from '../../sounds/notification.mp3'
 import axios from 'axios';
 
 
-const socket = io("http://localhost:5000", {
+const socket = io("https://madeformanners-backend.onrender.com", {
   transports: ["websocket"],
 });
 
@@ -153,7 +153,7 @@ const Header = () => {
 
   return (
     <>
-      <header className="Header bg-[#F8F3E8] fixed top-0 left-0 w-full z-50 shadow-md text-xl">
+      <header className="Header bg-[#090f39] fixed top-0 left-0 w-full z-50 shadow-md text-xl">
         <div className="mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
 
@@ -198,9 +198,9 @@ const Header = () => {
                 aria-label="Global"
                 className={`${menuOpen ? 'block' : 'hidden'} md:block absolute md:static top-16 left-0 w-full md:w-auto shadow-md md:shadow-none`}
               >
-                <ul className="flex flex-col md:flex-row items-center gap-4 pb-2 bg-[#F8F3E8]">
+                <ul className="flex flex-col md:flex-row items-center gap-4 pb-2 bg-[#090f39] ">
                   {navItems.map((item) => (
-                    <li key={item.id}>
+                    <li key={item.id} className='text-[#C0C0C0]'>
                       <NavLink
                         to={item.label}
                         onClick={() => setMenuOpen(false)}
@@ -213,7 +213,7 @@ const Header = () => {
                   {id === '' ? (
                     <>
                       <NavLink
-                        className="rounded-md bg-[#C6A662] px-3 py-2 text-white shadow-sm"
+                        className="rounded-md bg-[#3b3E79] px-3 py-2 text-[#C0C0C0] shadow-sm"
                         to="login"
                         onClick={() => setMenuOpen(false)}
                       >
@@ -221,7 +221,7 @@ const Header = () => {
                       </NavLink>
 
                       <NavLink
-                        className="rounded-md bg-white px-3 py-2 text-[#C6A662]"
+                        className="rounded-md bg-[#C0C0C0] px-3 py-2 text-[#3b3E79]"
                         to="Register"
                         onClick={() => setMenuOpen(false)}
                       >
@@ -230,7 +230,7 @@ const Header = () => {
                     </>
                   ) : (
                     <button
-                      className="rounded-md bg-[#C6A662] px-3 py-2 text-white shadow-sm"
+                      className="rounded-md bg-[#3b3E79] px-3 py-2 text-[#C0C0C0] shadow-sm"
                       onClick={() => {
                         handelLogOut();
                         setMenuOpen(false);
@@ -287,7 +287,7 @@ const Header = () => {
                     onClick={() => setMenuOpen(!menuOpen)}
                     className="rounded-sm p-2 text-gray-600"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="size-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ color: '#C6A662' }}>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="size-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ color: '#C0C0C0' }}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                     </svg>
                   </button>

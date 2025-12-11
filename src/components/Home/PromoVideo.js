@@ -1,6 +1,6 @@
 import React from "react";
 import "./PromoVideo.scss";
-// import promoVideo from "../../videos/promo.mp4"; 
+import promoVideo from "../../images/welcomeSection.mp4"; 
 
 
 const PromoVideo = () => {
@@ -8,8 +8,8 @@ const PromoVideo = () => {
 
       <div className="video-slider-container">
         <iframe
-          src=""
-          width="100%"
+          src={promoVideo}
+          width="50%"
           height="100%"
           allow="autoplay; fullscreen"
           title="promo"

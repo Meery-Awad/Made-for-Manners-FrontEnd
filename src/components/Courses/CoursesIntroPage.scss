@@ -58,7 +58,42 @@
   background-color: $Second_Color;
 }
 
+.online-steps {
+  width: 90%;
+  margin: 2rem auto;
+  background: #c0edfd6a;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+
+  h3 {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    color: $Second-Color;
+    text-align: center;
+  }
+
+  ul {}
+
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &::before {
+      content: "•";
+      font-size: 1.4rem;
+      color: $First_Color;
+      flex-shrink: 0;
+      padding: 10px
+    }
+  }
+}
+
+
+
 @media (max-width: 768px) {
+
   .intro-section,
   .intro-section.reverse {
     flex-direction: column;

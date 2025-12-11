@@ -1,9 +1,10 @@
 // $First-Color: #d9b53c;
 // $Second-Color: #70caed;
-$First-Color: #C6A662;
-$Second-Color: #B7B4A9;
-$background-color: azure;
-$Font-Color : #2B2B2A;
+$First-Color: #090f39;
+$Second-Color: #3b3E79;
+$background-color: #fff;
+$Font-Color : #C0C0C0;
+$Font-Color2: #333;
 $btn-color: #555;
 
 $btn-bg: #fff;
@@ -20,15 +21,16 @@ $margin-top: 40px;
 $top: 6.5rem;
 $width: 80vw;
 
+
 body {
   width: 100vw;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  color: $Font-Color;
-  background-color: $light-bg;
-  padding: 0 25px;
-
+  place-items: center;
+  color: $Font-Color2;
+  // padding: 0 25px;
+  font-style: unset;
+  margin: auto;
+  
 }
 
 .page-container {
@@ -91,10 +93,9 @@ body {
 $num : 3.5rem;
 
 @mixin h1 {
-  font-size: $font-Size;
+  font-size: 2rem;
   font-weight: 600;
   color: $First-Color;
- 
   text-align: center;
 }
 
@@ -136,7 +137,7 @@ $num : 3.5rem;
 
 
 .recommended {
-  margin: 1rem 0 2.3rem;
+  margin: 2.8rem 0 2.3rem;
 
   .topic {
 
@@ -150,7 +151,7 @@ $num : 3.5rem;
     align-items: center;
     justify-content: center;
     margin: 1rem auto;
-   
+
 
     .line {
       width: 90vw;

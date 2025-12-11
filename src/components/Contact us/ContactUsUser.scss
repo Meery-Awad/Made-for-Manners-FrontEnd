@@ -4,7 +4,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 95vw;
+  width: 100vw;
+
+  margin-bottom: 10rem;
+
 
   .header {
     text-align: center;
@@ -23,7 +26,7 @@
 
     p {
       font-size: 1.1rem;
-      color: $Font-Color;
+      color: $Font-Color2;
       line-height: 1.9;
 
 
@@ -35,16 +38,21 @@
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
     border-radius: 1rem;
     padding: 2rem;
-    
-    max-width: 900px;
+
+    // max-width: 900px;
+    width: 70vw;
+
     display: grid;
     grid-template-columns: 1fr;
     gap: 3rem;
 
-    @media (min-width: 768px) {
+    @media (min-width: 568px) {
       grid-template-columns: 1fr 1fr;
-    }
 
+    }
+  @media (max-width: 768px) {
+      width: 90vw;
+      }
     .contact-form {
       display: flex;
       flex-direction: column;
@@ -78,6 +86,7 @@
         display: flex;
         flex-direction: column;
         gap: 0.5rem;
+        border-color: $Second-Color;
 
         .phone-wrapper {
           display: flex;
@@ -88,7 +97,7 @@
             width: 100%;
             padding: 0.75rem 1rem;
             border-radius: 0.5rem;
-            border: 1px solid #d1d5db;
+
             font-size: 1rem;
             cursor: pointer;
           }
@@ -97,7 +106,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            border: 1px solid #d1d5db;
+            border: 1px solid $Second-Color;
             border-radius: 0.5rem;
             overflow: hidden;
 
@@ -105,7 +114,7 @@
               background: #f3f4f6;
               padding: 0.75rem 1rem;
               font-weight: 500;
-              color: $Font-Color;
+              color: $Font-Color2;
             }
 
             input {
@@ -130,9 +139,10 @@
         transition: 0.3s;
 
         &:hover {
-          box-shadow: 2px 2px 2px 2px $Font-Color;
+          box-shadow: 2px 2px 2px 2px $Font-Color2;
         }
       }
+
     }
 
     .contact-info {
@@ -140,14 +150,28 @@
       flex-direction: column;
       justify-content: center;
       gap: 1.5rem;
+      background-image: url("https://img.freepik.com/free-photo/gorgeous-young-woman-using-mobile-phone-co-working-space_176420-19739.jpg?semt=ais_hybrid&w=740&q=80");
+      background-size: cover;
+      position: relative;
+
+
+      &::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: rgba(229, 229, 229, 0.6);
+        z-index: 1;
+
+      }
 
       a {
         display: flex;
         align-items: center;
         gap: 0.75rem;
         font-size: 1rem;
-        color: $Font-Color;
+        color: #000000;
         transition: 0.3s;
+        font-weight: bold;
 
         .icon {
           width: 24px;
@@ -159,10 +183,16 @@
           color: $Second-Color;
 
           &:last-child {
-            color: #16a34a;
+            color: blue;
           }
         }
+
+      }
+
+      @media (max-width: 768px) {
+        height: 500px;
       }
     }
+
   }
 }

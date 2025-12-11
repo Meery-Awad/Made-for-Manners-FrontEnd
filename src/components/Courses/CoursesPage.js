@@ -11,9 +11,9 @@ import { useLocation } from 'react-router-dom';
 
 const CoursesPage = () => {
   const state = useSelector((state) => state.data);
-  const {setCourseDetails} = useBetween(state.useShareState);
-   const location = useLocation();
-  const { courseType } = location.state || {}; 
+  const { setCourseDetails } = useBetween(state.useShareState);
+  const location = useLocation();
+  const { courseType } = location.state || {};
 
   useEffect(() => {
     setCourseDetails({
@@ -34,18 +34,20 @@ const CoursesPage = () => {
       coursePlace: '',
 
     })
+    window.scrollTo(0, 0);
   }, [])
+ 
   return (
     <div className="PageContaner">
       <>
-        <div className="recommended">
+        {/* <div className="recommended">
           <p className="topic">{courseType}s</p>
           <div className="line-container">
             <span className="line"></span>
             <i className="fas fa-play-circle"></i>
-          </div>
+          </div> */}
           {/* <div className='noti'>Please be advised that once the payment for the course has been completed, cancellations and refunds are not permitted.</div> */}
-        </div>
+        {/* </div> */}
         <div className="row1">
           <SortAndFilter />
           <SearchBox />

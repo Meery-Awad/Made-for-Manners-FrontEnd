@@ -101,8 +101,8 @@ const reminders = (state = [], action) => {
             categories: [],
             bookedUsers: [],
             joinedUsers: [],
-            isNotLive :false,
-            categories:  [],
+            isNotLive: false,
+            categories: [],
             coursePlace: '',
 
         })
@@ -123,7 +123,7 @@ const reminders = (state = [], action) => {
             };
 
             CoursesData();
-           
+
         }, [reload, notifications]);
 
         useEffect(() => {

@@ -14,16 +14,27 @@ const Intro = () => {
                         Learn directly with our instructors through in-person classes designed
                         for practical learning and real interaction.
                     </p>
+
                     <NavLink to="/coursesdetelias"
                         className="intro-btn"
                         state={{ courseType: 'Face-to-Face Course' }}
                     >
+
                         View Face-to-Face Courses
                     </NavLink>
                 </div>
             </section>
-
-            <section className="intro-section reverse">
+            <div className="online-steps">
+                <h3>Course Booking Process</h3>
+                <ul>
+                    <li>Select the course you want to join.</li>
+                    <li>You will be contacted through email within a maximum of 2 days.</li>
+                    <li>We will share all details and confirm your booking.</li>
+                    <li>Payment will be completed online to secure your spot.</li>
+                    <li>You will receive an invoice immediately after the payment.</li>
+                </ul>
+            </div>
+            {/* <section className="intro-section reverse">
                 <div className="intro-image left">
                     <img src="https://media.istockphoto.com/id/1333547908/photo/smiling-woman-have-webcam-online-meeting-on-computer.jpg?s=2048x2048&w=is&k=20&c=2RzcfjnRKoeKSQjIpS-JT3Nw4R_amYO40lXA9huC724=" alt="Online Courses" />
                 </div>
@@ -40,7 +51,7 @@ const Intro = () => {
                         View Online Courses
                     </NavLink>
                 </div>
-            </section>
+            </section> */}
         </div>
     )
 }

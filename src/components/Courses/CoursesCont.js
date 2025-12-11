@@ -153,7 +153,7 @@ const CoursesContaner = ({ type = "all" }) => {
             index === self.findIndex((u) => u.email === user.email)
         )
         : [];
-     
+
 
       return (
         <div
@@ -164,11 +164,16 @@ const CoursesContaner = ({ type = "all" }) => {
         >
           <div className="imageWrapper">
             {item.isNotLive && <i className="notLive">is Not Live </i>}
+            <div className="blurLayer"></div>
             <img src={item.img} alt="Course" />
-            <span
+            <div className="description">
+              <div className="text">{item.description}</div>
+            </div>
+
+            {/* <span
               className="particNum"
               style={{
-                background: userDetails.email === admin.email ? "#C6A662" : "#ACABAD",
+                background: userDetails.email === admin.email ? "#3b3E79" : "#ACABAD",
               }}
               onClick={(e) => {
                 if (userDetails.email === admin.email) {
@@ -178,7 +183,7 @@ const CoursesContaner = ({ type = "all" }) => {
               }}
             >
               <i className="fas fa-user"></i> {uniqueUsers.length - 1}
-            </span>
+            </span> */}
           </div>
 
           <div className="details">
@@ -206,10 +211,11 @@ const CoursesContaner = ({ type = "all" }) => {
                   ></i>
                 </div>
               )}
-              {type == 'recommended' && (
+              {/* {type == 'recommended' && (
                 <div className="courseType">
                   {item.coursePlace}
-                </div>)}
+                </div>)
+              } */}
             </div>
 
             <div className="name">{item.name}</div>
@@ -221,8 +227,12 @@ const CoursesContaner = ({ type = "all" }) => {
               <span>
                 <i className="fas fa-clock"></i> ({item.time}) - ({item.endtime})
               </span>
+
             </div>
-            <div className="description">{item.description}</div>
+            <p className="Categories">
+              <strong>Course Categories: </strong>
+              <span className="categoriesText">{item.categories.join(', ')}</span>
+            </p>
             {item.coursePlace == 'Online Course' ? (
               isAlreadyBooked || userDetails.email === admin.email ? (
                 <button
@@ -281,7 +291,7 @@ const CoursesContaner = ({ type = "all" }) => {
             </button>
             )}
           </div>
-        </div>
+        </div >
       );
     });
   };

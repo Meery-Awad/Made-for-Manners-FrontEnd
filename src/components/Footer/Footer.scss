@@ -1,37 +1,161 @@
-
 @import '../../App.scss';
+
+$color: $Second-Color;
+
 .footer {
-  width: 90vw;
-  margin: 40px 0 20px;
-  padding: 10px 0;
-  text-align: center;
-  font-size: 14px;
-  color: $Font-Color;
-  border-top: 3px solid $Second-Color;
-  
+  background-color: $First-Color;
+  color: #fff;
+  padding: 50px 0 0;
+  width: 100vw;
+  margin-top: 10rem;
 
-  // .footer-links {
-  //   margin-top: 10px;
+  .footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
 
-  //   a {
-  //     margin: 0 10px;
-  //     color: #555;
-  //     text-decoration: none;
-  //     transition: color 0.2s ease-in-out;
+    .logo-section img {
+      width: 50%;
+      margin: 0 auto;
+      border-radius: 20px;
 
-  //     &:hover {
-  //       color: #000;
-  //     }
-  //   }
-  // }
-  .policy-link {
-      color: $First-Color;
-      font-weight: 500;
-      transition: color 0.2s;
+    }
+
+    .line {
+      height: 100px;
+      width: 10px;
+      border-left: 3px solid $color
+    }
+
+    .footer-section {
+      flex: 1 1 50px;
+      max-width: 400px;
+      text-align: center;
+
+
+      p {
+        line-height: 1.6;
+      }
+
+
+    }
+  }
+
+  .contact-section {
+    span {
+      display: flex;
+      margin-top: 10px;
+      font-size: 20px;
+    }
+
+    .fas {
+
+      // background-color: #fff;
+      // position: absolute;
+      padding: 7px;
+      border-radius: 20px;
+      color: $color;
+      background-color: #fff;
+      margin: 0 10px;
+
+
+    }
+
+    p {
+      text-decoration: underline;
+    }
+
+  }
+
+  .footer-social {
+    margin-top: 20px;
+    text-align: center;
+
+    p {
+      margin-bottom: 10px;
+      font-weight: 600;
+
+    }
+
+    .follow {
+      font-size: 25px;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      padding: 10px 0;
+
+      a {
+        color: $color;
+        padding: 2px 7px;
+        border-radius: 20px;
+        background-color: #fff;
+        margin: 0 10px;
+        font-size: 1.3rem;
+        transition: 0.3s;
+
+        &:hover {
+          background-color: $Second-Color;
+          color: #fff;
+        }
+      }
+    }
+  }
+
+  .footer-bottom {
+    margin-top: 10px;
+    border-top: 1px solid #444;
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background-color: #131313;
+    color: $Font-Color;
+
+    p {
+      margin: 0;
+      font-size: 0.9rem;
+
+    }
+
+    .policy-link {
+
       text-decoration: underline;
 
       &:hover {
         color: $Second-Color;
       }
     }
+  }
+
+  // Responsive
+  @media (max-width: 768px) {
+    .footer-container {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .footer-section {
+        min-width: 0;
+        margin-top: 50px;
+      }
+      .line{
+        display: none;
+      }
+      .contact-section{
+        margin-bottom: 30px;
+      }
+    }
+
+    .footer-social {
+      .social-icons {
+        flex-wrap: wrap;
+      }
+    }
+  }
 }

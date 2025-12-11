@@ -1,19 +1,51 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import "./Footer.scss";
+import logo from "../../images/img.jpg";
 
 const Footer = () => {
   return (
     <footer className="footer">
-      <p>
-        We offer online etiquette lessons for all ages, guided by an experienced instructor.  
-        Our affordable courses cover various styles and approaches, with free videos from Ms. Julie to help everyone practice proper etiquette.
-      </p>
+      <div className="footer-container">
 
+
+        <div className="footer-section logo-section">
+          <img src={logo} alt="Made for Manners Logo" />
+        </div>
+        <div className="line"></div>
+        <div className="footer-section about-section">
+          <p>
+            We offer online etiquette lessons for all ages, guided by an experienced instructor.
+            Our affordable courses cover various styles and approaches, with free videos from Ms. Julie to help everyone practice proper etiquette.
+          </p>
+        </div>
+        <div className="line"></div>
+
+        <div className="footer-section contact-section">
+
+          <span><i className="fas fa-envelope"></i><p> <a href="mailto:hello@madeformanners.com">hello@madeformanners.com</a></p></span>
+          <span><i className="fas fa-globe"></i><p><a href="https://madeformanners.com/home" target="_blank" rel="noopener noreferrer">madeformanners.com</a></p></span>
+        </div>
+
+      </div>
+
+      {/* Follow Us */}
+      <div className="footer-social">
+        <p className="follow">Follow Us On Social Media</p>
+        <div className="social-icons">
+          <a href="https://www.instagram.com/madeformanners/" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+          <a href="https://x.com/MannersFor79214" target="_blank" rel="noopener noreferrer"><i className="fab fa-x-twitter"></i></a>
+          <a href="https://www.tiktok.com/@user1742031833181" target="_blank" rel="noopener noreferrer"><i className="fab fa-tiktok"></i></a>
+          <a href="https://www.linkedin.com/in/made-for-manners" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin-in"></i></a>
+        </div>
+        <p>© {new Date().getFullYear()} Made for Manners. All rights reserved.</p>
+      </div>
+
+      {/* Footer Bottom */}
       <div className="footer-bottom">
-        <p>© {new Date().getFullYear()} Etiquette Academy. All rights reserved.</p>
+
         <NavLink to="/policy" className="policy-link">
           Policies & Terms
-        </NavLink> 
+        </NavLink>
       </div>
     </footer>
   );
