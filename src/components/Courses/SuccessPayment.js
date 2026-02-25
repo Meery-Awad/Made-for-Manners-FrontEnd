@@ -9,80 +9,93 @@ const SuccessPayment = () => {
   const state = useSelector((state) => state.data);
   const { userDetails, setUserDetails, courseValid, reload, setReload, serverUrl, setLoading } = useBetween(state.useShareState);
   const navigate = useNavigate();
-  const addedRef = useRef(false);
-  const [course, setCourse] = useState({});
+  const [email, setEmail] = useState("");
 
   useEffect(() => {
     setLoading(true)
-    const addCourse = async () => {
-      if (addedRef.current) return;
-
+    const verifyAndAddCourse = async () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const courseId = urlParams.get("courseId");
+      const sessionId = urlParams.get("session_id");
+      alert(sessionId)
+      if (!sessionId) return;
+      alert(sessionId)
+      // if (!courseId || !userDetails.id) return;
 
-      if (!courseId || !userDetails.id) return;
-
-      const isAlreadyBooked = userDetails.courses.some(c => c._id === courseId);
-      if (isAlreadyBooked) return;
+      // const isAlreadyBooked = userDetails.courses.some(c => c._id === courseId);
+      // if (isAlreadyBooked) return;
 
       try {
 
         const response = await axios.post(
-          `${serverUrl}/api/payments/UserCoursesStatus`,
-          { userId: userDetails.id, courseId, userImg: userDetails.img, key: "1" }
+          `${serverUrl}/api/payments/verify-payment`,
+          { sessionId }
         );
+        const { courseId, userName, userPhone, userEmail } = response.data;
 
-        const { course1 } = response.data;
+        await axios.post(
+          `${serverUrl}/api/payments/UserCoursesStatus`,
+          {
+            courseId,
+            userName,
+            userPhone,
+            userEmail
+          }
+        );
+        setEmail(userEmail)
 
-        if (course1) {
-          setUserDetails(prev => ({
-            ...prev,
-            courses: [...prev.courses, { ...course1, status: "booking" }]
-          }));
 
-          const courseDay = new Date(course1.date);
-          const sevenDaysLater = new Date(courseDay);
-          sevenDaysLater.setDate(courseDay.getDate() + 7);
+        // const { course1 } = response.data;
 
-          const day = sevenDaysLater.getDate();
-          const month = sevenDaysLater.getMonth() + 1;
-          const year = sevenDaysLater.getFullYear();
+        // if (course1) {
+        //   setUserDetails(prev => ({
+        //     ...prev,
+        //     courses: [...prev.courses, { ...course1, status: "booking" }]
+        //   }));
 
-          const formattedDate = `${year}-${month}-${day}`;
-          const courseWithValidDate = { ...course1, ValidDate: formattedDate };
-          setCourse(courseWithValidDate);
+        //   const courseDay = new Date(course1.date);
+        //   const sevenDaysLater = new Date(courseDay);
+        //   sevenDaysLater.setDate(courseDay.getDate() + 7);
 
-          sessionStorage.setItem(
-            "recentCourse",
-            JSON.stringify({
-              name: course1.name,
-              date: course1.date,
-              ValidDate: sevenDaysLater
-            })
-          );
+        //   const day = sevenDaysLater.getDate();
+        //   const month = sevenDaysLater.getMonth() + 1;
+        //   const year = sevenDaysLater.getFullYear();
 
-          addedRef.current = true;
-          setReload(!reload)
-          if(course.ValidDate)
-          setLoading(false)
+        //   const formattedDate = `${year}-${month}-${day}`;
+        //   const courseWithValidDate = { ...course1, ValidDate: formattedDate };
+        //   setCourse(courseWithValidDate);
 
-        }
+        //   sessionStorage.setItem(
+        //     "recentCourse",
+        //     JSON.stringify({
+        //       name: course1.name,
+        //       date: course1.date,
+        //       ValidDate: sevenDaysLater
+        //     })
+        //   );
+
+        //   addedRef.current = true;
+        //   setReload(!reload)
+        //   if (course.ValidDate)
+        //     
+
+        // }
+        setLoading(false)
       } catch (err) {
 
         alert(" Error adding course, please try again");
       }
     };
 
-    addCourse();
-  }, [userDetails.id, userDetails.courses, setUserDetails]);
-
-
-  useEffect(() => {
-    const savedCourse = sessionStorage.getItem("recentCourse");
-    if (savedCourse) {
-      setCourse(JSON.parse(savedCourse));
-    }
+    verifyAndAddCourse();
   }, []);
+
+
+  // useEffect(() => {
+  //   const savedCourse = sessionStorage.getItem("recentCourse");
+  //   if (savedCourse) {
+  //     setCourse(JSON.parse(savedCourse));
+  //   }
+  // }, []);
 
 
   const handleNavigation = (path) => {
@@ -92,26 +105,23 @@ const SuccessPayment = () => {
 
   return (
     <>
-      {course.ValidDate && <div className="successCont">
-         <div className="card simple">
-        <h2>✅ Payment Successful</h2>
-        <p>Your course has been added with booking status!</p>
-        {course.date && course.ValidDate && (
-          <p style={{ color: "rgb(243, 98, 98)" }}>
-            {`${courseValid || course.name} (${course.date}) - (${course.ValidDate})`}
-          </p>
-        )}
-        <div className="buttons">
-          <button className="backBtn" onClick={() => handleNavigation("/Courses")}>
-            Back to Courses
-          </button>
-          <button className="backBtn" onClick={() => handleNavigation("/Profile")}>
-            Go to Profile
-          </button>
-        </div>
+      <div className="successCont">
+        <div className="card simple">
+          <h2>✅ Payment Successful</h2>
+          <p>Your course has been successfully booked, and the invoice along with the course details has been sent to your email</p>
+          <p>{email}</p>
+
+          <div className="buttons">
+            <button className="backBtn" onClick={() => handleNavigation("/Courses")}>
+              Back to Courses
+            </button>
+            <button className="backBtn" onClick={() => handleNavigation("/Profile")}>
+              Go to Profile
+            </button>
+          </div>
         </div>
       </div>
-      }
+
     </>
   );
 };

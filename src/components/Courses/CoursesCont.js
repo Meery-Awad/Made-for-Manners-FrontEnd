@@ -28,9 +28,7 @@ const CoursesContaner = ({ type = "all" }) => {
     selectedCourse,
     setSelectedCourse,
     serverUrl,
-    categories,
-    websiteTitle,
-    setCourses
+    bookedMsg,
   } = useBetween(state.useShareState);
   const location = useLocation();
   const { courseType, img } = location.state || {};
@@ -88,27 +86,25 @@ const CoursesContaner = ({ type = "all" }) => {
   };
 
 
-  const handleCheckout = async (courseName, price, courseId) => {
-    if (!userDetails.id) {
-      setModalMsg("Please log in to book and watch the videos");
-      setShowModal(true);
-      return;
-    }
+  const handleCheckout = async (courseName, price, courseId, userInfo = null) => {
+    
+  try {
+    const payload = {
+      courseName,
+      price,
+      courseId,
+      userName: userInfo?.name || "",
+      userEmail: userInfo?.email || "",
+      userPhone: userInfo?.phone || "",
+    };
 
-    try {
-      const res = await axios.post(`${serverUrl}/api/payments/create-checkout-session`, {
-        courseName,
-        price,
+    const res = await axios.post(`${serverUrl}/api/payments/create-checkout-session`, payload);
 
-        courseId,
-        userName: userDetails.name,
-      });
-
-      window.location.href = res.data.url;
-    } catch {
-      alert("Error creating checkout session please try again");
-    }
-  };
+    window.location.href = res.data.url;
+  } catch {
+    alert("Error creating checkout session, please try again");
+  }
+};
 
 
   const playCoursesList = () => {
@@ -180,7 +176,7 @@ const CoursesContaner = ({ type = "all" }) => {
             >
               <i className="fas fa-user"></i> {uniqueUsers.length - 1}
             </span>
-    }
+            }
           </div>
 
           <div className="details">
@@ -188,13 +184,13 @@ const CoursesContaner = ({ type = "all" }) => {
               {/* {item.coursePlace == "Online Course" &&  */}
               <div className="price">
                 £ {item.coursePlace == "Online Course" || item.price != 0 ? (
-                  
-                    <span className="cost">{item.price}{item.price === 0 && <p>(Free)</p>}
-                    
-                      {item.Vit > 0 &&
 
-                        <span className="cost">  + Vit (£ {item.Vit})</span>
-                      }
+                  <span className="cost">{item.price}{item.price === 0 && <p>(Free)</p>}
+
+                    {item.Vit > 0 &&
+
+                      <span className="cost">  + Vit (£ {item.Vit})</span>
+                    }
                   </span>
                 ) : <div className=" cost hiddenPrice">***</div>}
 
@@ -317,22 +313,34 @@ const CoursesContaner = ({ type = "all" }) => {
                     setModalMsg("Sorry, this course has already taken place.");
                     setShowModal(true);
                     return;
+                    
+                    
                   }
 
-
-                  if (!userDetails?.id) {
-                    setModalMsg("Please log in to book this course.");
+                 
+                    setSelectedCourse(item)
+                    setModalMsg(bookedMsg);
                     setShowModal(true);
-                    return;
-                  }
+                   
+                  // if (!userDetails?.id) {
+                  //   localStorage.setItem('pendingCheckout', JSON.stringify({
+                  //     courseId: item._id,
+                  //     courseName: item.name,
+                  //     price: item.price + item.Vit
+
+                  //   }));
+                  //   setModalMsg(bookedMsg);
+                  //   setShowModal(true);
+                  //   return;
+                  // }
 
 
-                  if (isAlreadyBooked) {
-                    return;
-                  }
+                  // if (isAlreadyBooked) {
+                  //   return;
+                  // }
 
 
-                  handleCheckout(item.name, item.price + item.Vit, item._id);
+                  // handleCheckout(item.name, item.price + item.Vit, item._id);
                 }}
               >
                 {isAlreadyBooked ? "Booked" : "Book Now"}
@@ -404,6 +412,11 @@ const CoursesContaner = ({ type = "all" }) => {
         onClose={() => setShowModal(false)}
         message={modalMsg}
         title={modalTitle}
+        onSubmitUserInfo={(userInfo) => {
+          handleCheckout(selectedCourse.name, selectedCourse.price + selectedCourse.Vit, selectedCourse._id, userInfo);
+        }}
+        bookedMsg={bookedMsg}
+
       />
 
       <CourseDetailsModal

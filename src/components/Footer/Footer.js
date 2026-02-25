@@ -12,10 +12,10 @@ const Footer = () => {
         <div className="line"></div>
         <div className="footer-section about-section">
           <p>
-            We offer etiquette support for all ages, guided by an experienced instructor. Operating from Windsor and UAE, we guide families and professionals committed to advancing in life and career.
+            We offer etiquette support for all ages, guided by an experienced instructor. Operating from Windsor, we guide families and professionals committed to advancing in life and career.
             Certified at Minding Manners International Etiquette and Protocol Academy.
           </p>
-
+       
         </div>
         <div className="line"></div>
 
@@ -52,8 +52,8 @@ const Footer = () => {
         <NavLink to="/policy" className="policy-link">
           Policies & Terms
         </NavLink>
+        
       </div>
-
     </footer>
   );
 };

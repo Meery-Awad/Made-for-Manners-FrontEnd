@@ -69,10 +69,11 @@ const LoginPage = () => {
     const blob = await response.blob();
     return new File([blob], filename, { type: mimeType });
   };
-  const handleSubmit = async (e) => {
-    setLoading(true);
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+  setLoading(true);
 
+  try {
     if (isRegister) {
       const formData = new FormData();
       formData.append("name", userDetails.name);
@@ -81,51 +82,62 @@ const LoginPage = () => {
       formData.append("confirmPassword", userDetails.confirmPassword);
       formData.append("img", userDetails.img || icon1);
 
+      await axios.post(`${serverUrl}/api/users/register`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
+      setLoading(false);
+      navigate("/Login");
 
-      axios.post(`${serverUrl}/api/users/register`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-
-      })
-        .then(() => {
-
-          setLoading(false);
-          navigate("/Login");
-        })
-        .catch((err) => {
-          setErorr(err.response?.data?.message);
-          setLoading(false);
-        });
     } else {
-      axios
-        .post(`${serverUrl}/api/users/login`, { email, password })
-        .then((res) => {
-          const newUser = {
-            id: res.data.id,
-            name: res.data.name,
-            email: res.data.email,
-            password: res.data.password,
-            img: res.data.img,
-            courses: res.data.courses,
-            notifications: res.data.notifications,
-            newNotifications: res.data.newNotifications
+      const res = await axios.post(`${serverUrl}/api/users/login`, { email, password });
 
-          };
-          setUpdatedData(newUser);
-          setUserDetails(newUser);
-          setLoading(false);
-          localStorage.setItem('userID', JSON.stringify({ id: res.data.id }));
-          navigate('/Home');
-        })
-        .catch((err) => {
-          setErorr(err.response?.data?.message);
-          setLoading(false);
-        });
+      const newUser = {
+        id: res.data.id,
+        name: res.data.name,
+        email: res.data.email,
+        password: res.data.password,
+        img: res.data.img,
+        courses: res.data.courses,
+        notifications: res.data.notifications,
+        newNotifications: res.data.newNotifications,
+      };
+
+      setUpdatedData(newUser);
+      setUserDetails(newUser);
+      localStorage.setItem('userID', JSON.stringify({ id: res.data.id }));
+
+    
+      const pending = localStorage.getItem('pendingCheckout');
+      if (pending) {
+        const { courseId, courseName, price } = JSON.parse(pending);
+        localStorage.removeItem('pendingCheckout'); 
+
+        try {
+          const checkoutRes = await axios.post(`${serverUrl}/api/payments/create-checkout-session`, {
+            courseName,
+            price,
+            courseId,
+            userName: newUser.name, 
+          });
+
+          window.location.href = checkoutRes.data.url;
+        } catch {
+          alert("Error creating checkout session, please try again");
+        }
+
+      } else {
+        navigate('/courses'); 
+      }
+
+      setLoading(false);
     }
-  };
 
+  } catch (err) {
+    setErorr(err.response?.data?.message || "Something went wrong");
+    setLoading(false);
+  }
+};
   useEffect(() => {
     setUserDetails({
       id: '', name: '', email: '', password: '',
@@ -156,6 +168,7 @@ const LoginPage = () => {
       <div className="login-card">
         <form onSubmit={handleSubmit}>
           <div className="form-group">
+            <div>Login for Admin only. </div>
             {erorr && <div className='error'>{erorr}</div>}
 
             {isRegister && (
@@ -174,13 +187,13 @@ const LoginPage = () => {
               <i className={`fas ${showPassword ? 'fa-eye-slash' : 'fa-eye'} eye-icon`} onClick={() => setShowPassword(!showPassword)}></i>
             </div>
 
-            {!isRegister && (
+            {/* {!isRegister && (
               <p className="text-center mt-3">
                 <NavLink to="/forgot-password" className="text-600 underline" >
                   Forgot your password?
                 </NavLink>
               </p>
-            )}
+            )} */}
 
             {isRegister && (
               <>
@@ -190,7 +203,7 @@ const LoginPage = () => {
                   <i className={`fas ${showConfirmPassword ? 'fa-eye-slash' : 'fa-eye'} eye-icon`} onClick={() => setShowConfirmPassword(!showConfirmPassword)}></i>
                 </div>
 
-                <label>Upload Image <span className="description">(optional)</span></label>
+                {/* <label>Upload Image <span className="description">(optional)</span></label>
                 <input type="file" accept="image/*" onChange={handleImageChange} ref={fileInputRef} />
 
                 {userDetails.img && (
@@ -201,19 +214,19 @@ const LoginPage = () => {
                     <img src={userDetails.img} alt="Preview" />
 
                   </div>
-                )}
+                )} */}
               </>
             )}
           </div>
 
           <button type="submit" className="login-btn">{isRegister ? 'Register' : 'Login'}</button>
 
-          {!isRegister && (
+          {/* {!isRegister && (
 
             <p className="text-center mt-4">
               Don't have an account? <NavLink to="/Register" className="text-600 underline" >Register here</NavLink>
             </p>
-          )}
+          )} */}
         </form>
       </div>
     </div>

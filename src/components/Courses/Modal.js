@@ -138,15 +138,16 @@ const CourseModal = () => {
     }));
   };
 
-  const handleCheckboxChange = () => {
-    setCourseDetails((prev) => ({ ...prev, recommended: !recommended }));
-  };
+  // const handleCheckboxChange = () => {
+  //   setCourseDetails((prev) => ({ ...prev, recommended: !recommended }));
+  // };
 
-  const handleNotLiveChange = () => {
-    setCourseDetails(prev => ({ ...prev, isNotLive: !prev.isNotLive }));
-  };
+  // const handleNotLiveChange = () => {
+  //   setCourseDetails(prev => ({ ...prev, isNotLive: !prev.isNotLive }));
+  // };
 
   const handleSubmit = async (e) => {
+    
     e.preventDefault();
     const today = new Date();
     today.setHours(0, 0, 0, 0); // to compare only the date, not time
@@ -365,10 +366,10 @@ const CourseModal = () => {
 
           </form>
         </Modal.Body>
-
+      
         <Modal.Footer dir="auto">
           <Button variant="secondary" onClick={() => { initCourseModal(); setModalIsOpen(false); }}>Close</Button>
-          <Button variant="primary" onClick={handleSubmit}>{editOrAdd}</Button>
+          <Button variant="primary"  onClick={handleSubmit}>{editOrAdd}</Button>
         </Modal.Footer>
       </Modal>
     </div>

@@ -35,7 +35,7 @@ function App() {
              <Route path="/coursesdetails" element={<CoursesPage />} />
             {/* <Route path="/Intro" element ={<Intro/>}/> */}
             <Route path="/videoCall/:courseId" element={<VideoCall />} />
-            <Route path="/login" element={<LoginPage />} />
+            <Route path="/login_Admin" element={<LoginPage />} />
             <Route path="/register" element={<LoginPage />} />
             <Route path="/profile" element={<ProfileModal />} />
             <Route path="/success" element={<SuccessPayment />} />

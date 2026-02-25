@@ -1,4 +1,4 @@
-import React from "react";
+
 import "./CanceledPayment.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -8,6 +8,7 @@ const PaymentFailedPage = () => {
 
   const onBack = () => navigate("/Courses");
   const onContact = () => navigate("/Contact us");
+  localStorage.removeItem('pendingCheckout');
   
   return (
     <div className="payment-failed-page">

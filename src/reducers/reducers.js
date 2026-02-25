@@ -9,6 +9,8 @@ const reminders = (state = [], action) => {
         const [allCourses, setAllCourses] = useState([])
         const [Loading, setLoading] = useState(false);
         const [reload, setReload] = useState(false);
+        const bookedMsg="Please provide your details to proceed"
+
         // const serverUrl = 'http://localhost:5000'
         const serverUrl = 'https://madeformanners-backend.onrender.com'
         // const serverUrl='https://manor-of-manners-backend.onrender.com'
@@ -157,7 +159,8 @@ const reminders = (state = [], action) => {
             loginKeyWords, registerKeyWords,
             websiteTitle,
             notifications, setNotifications,
-            newNotifications, setnewNotifications
+            newNotifications, setnewNotifications,
+            bookedMsg
 
         };
     };
